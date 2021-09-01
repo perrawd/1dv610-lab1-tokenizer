@@ -1,0 +1,32 @@
+{
+  "name": "tokenizer",
+  "version": "1.0.0",
+  "description": "1DV610 Laboration-1 Tokenizer",
+  "type": "module",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "lint": "npx eslint ./src || exit 0",
+    "lint:fix": "npx eslint ./src --fix || exit 0",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:perrawd/1dv610-lab1-tokenizer.git"
+  },
+  "author": "Per Rawdin <pr222iw@student.lnu.se>",
+  "license": "MIT",
+  "devDependencies": {
+    "@lnu/eslint-config": "^1.1.3",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jsdoc": "^36.0.8",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "jest": "^27.1.0"
+  },
+  "eslintConfig": {
+    "extends": "@lnu"
+  }
+}
