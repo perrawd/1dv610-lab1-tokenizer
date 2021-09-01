@@ -17,6 +17,7 @@
   "author": "Per Rawdin <pr222iw@student.lnu.se>",
   "license": "MIT",
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.15.0",
     "@lnu/eslint-config": "^1.1.3",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
