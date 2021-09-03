@@ -34,17 +34,17 @@ export default class Tokenizer {
           regex = /([.\s])/
           break
         case 'ArithmeticGrammar':
-          regex = /[^\d()]+|[\d.]+/g
+          regex = /(?<=[-+*/])|(?=[-+*/])/
           break
         default:
           throw new Error('Missing valid lexical grammatic type.')
       }
-      console.log(this.string)
+
       // TODO: If possible, fix/finalize regex in order to remove filter.
       const splittedString = this.string
         .split(regex)
         .filter(w => w !== '' && w !== ' ')
-      console.log(splittedString)
+
       splittedString.forEach((subString, index) => {
         const tokenType = this._determineTokenType(this.type, subString)
 

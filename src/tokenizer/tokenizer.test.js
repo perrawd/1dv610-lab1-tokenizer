@@ -23,9 +23,9 @@ const wordDotGrammarOutput = [
 ]
 
 const arithmeticGrammarOutput = [
-  { tokenMatch: 0, tokenType: 'NUMBER', value: 3 },
+  { tokenMatch: 0, tokenType: 'NUMBER', value: '3' },
   { tokenMatch: 1, tokenType: 'ADD', value: '+' },
-  { tokenMatch: 2, tokenType: 'NUMBER', value: 2 }
+  { tokenMatch: 2, tokenType: 'NUMBER', value: '2' }
 ]
 
 /*
@@ -51,21 +51,21 @@ test('test determineTokenType method (DOT)', () => {
  * arithmeticGrammar test cases
  */
 test('test toMatchObject word and dot grammar', () => {
-  expect(arithmeticGrammar.tokenize()).toMatchObject('ArithmeticGrammar', arithmeticGrammarOutput)
+  expect(arithmeticGrammar.tokenize()).toMatchObject(arithmeticGrammarOutput)
 })
 
 test('test toStrictEqual word and dot grammar', () => {
-  expect(arithmeticGrammar.tokenize()).toStrictEqual('ArithmeticGrammar', arithmeticGrammarOutput)
+  expect(arithmeticGrammar.tokenize()).toStrictEqual(arithmeticGrammarOutput)
 })
 
 test('test determineTokenType method (WORD)', () => {
-  expect(arithmeticGrammar._determineTokenType(3)).toBe('NUMBER')
+  expect(arithmeticGrammar._determineTokenType('ArithmeticGrammar', '3')).toBe('NUMBER')
 })
 
 test('test determineTokenType method (DOT)', () => {
-  expect(arithmeticGrammar._determineTokenType('+')).toBe('ADD')
+  expect(arithmeticGrammar._determineTokenType('ArithmeticGrammar', '+')).toBe('ADD')
 })
 
 test('test determineTokenType method (DOT)', () => {
-  expect(arithmeticGrammar._determineTokenType(2)).toBe('NUMBER')
+  expect(arithmeticGrammar._determineTokenType('ArithmeticGrammar', '2')).toBe('NUMBER')
 })
