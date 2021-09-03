@@ -40,22 +40,22 @@ test('test toStrictEqual word and dot grammar', () => {
 })
 
 test('test determineTokenType method (WORD)', () => {
-  expect(wordDotGrammar._determineTokenType('Ord')).toBe('WORD')
+  expect(wordDotGrammar._determineTokenType('WordAndDotGrammar', 'Ord')).toBe('WORD')
 })
 
 test('test determineTokenType method (DOT)', () => {
-  expect(wordDotGrammar._determineTokenType('.')).toBe('DOT')
+  expect(wordDotGrammar._determineTokenType('WordAndDotGrammar', '.')).toBe('DOT')
 })
 
 /*
  * arithmeticGrammar test cases
  */
 test('test toMatchObject word and dot grammar', () => {
-  expect(arithmeticGrammar.tokenize()).toMatchObject(arithmeticGrammarOutput)
+  expect(arithmeticGrammar.tokenize()).toMatchObject('ArithmeticGrammar', arithmeticGrammarOutput)
 })
 
 test('test toStrictEqual word and dot grammar', () => {
-  expect(arithmeticGrammar.tokenize()).toStrictEqual(arithmeticGrammarOutput)
+  expect(arithmeticGrammar.tokenize()).toStrictEqual('ArithmeticGrammar', arithmeticGrammarOutput)
 })
 
 test('test determineTokenType method (WORD)', () => {

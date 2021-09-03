@@ -39,14 +39,14 @@ export default class Tokenizer {
         default:
           throw new Error('Missing valid lexical grammatic type.')
       }
-
+      console.log(this.string)
       // TODO: If possible, fix/finalize regex in order to remove filter.
       const splittedString = this.string
         .split(regex)
         .filter(w => w !== '' && w !== ' ')
-
+      console.log(splittedString)
       splittedString.forEach((subString, index) => {
-        const tokenType = this._determineTokenType(subString)
+        const tokenType = this._determineTokenType(this.type, subString)
 
         tokenizedString.push({
           tokenMatch: index,
@@ -64,17 +64,34 @@ export default class Tokenizer {
   /**
    * Determines the token-type of a string.
    *
-   * @param {any} subString The sub-string to determine type for.
+   * @param {string} type The sub-string to determine type for.
+   * @param {string} subString The sub-string to determine type for.
    * @returns {string} Type of the sub-string.
    */
-  _determineTokenType (subString) {
+  _determineTokenType (type, subString) {
     try {
       let tokenType
 
-      if (subString === '.') {
-        tokenType = 'DOT'
-      } else if (subString.length > 0) {
-        tokenType = 'WORD'
+      switch (type) {
+        case 'WordAndDotGrammar':
+          if (subString === '.') {
+            tokenType = 'DOT'
+          } else if (subString.length > 0) {
+            tokenType = 'WORD'
+          }
+          break
+        case 'ArithmeticGrammar':
+          switch (subString) {
+            case '+':
+              tokenType = 'ADD'
+              break
+            case '-':
+              tokenType = 'SUB'
+              break
+            default:
+              tokenType = 'NUMBER'
+          }
+          break
       }
 
       return tokenType
