@@ -33,6 +33,9 @@ export default class Tokenizer {
         case 'WordAndDotGrammar':
           regex = /([.\s])/
           break
+        case 'ArithmeticGrammar':
+          regex = /[^\d()]+|[\d.]+/g
+          break
         default:
           throw new Error('Missing valid lexical grammatic type.')
       }
