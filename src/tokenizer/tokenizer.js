@@ -21,30 +21,38 @@ export default class Tokenizer {
    * @returns {Array} An Array of objects for the tokenized string.
    */
   tokenize () {
-    let regex
-    const tokenizedString = []
+    try {
+      if (!this.string.length) {
+        throw new Error('Empty string provided. Please provide a valid string.')
+      }
 
-    switch (this.type) {
-      case 'WordAndDotGrammar':
-        regex = /([.\s])/
-    }
+      let regex
+      const tokenizedString = []
 
-    // TODO: If possible, fix/finalize regex in order to remove filter.
-    const splittedString = this.string
-      .split(regex)
-      .filter(w => w !== '' && w !== ' ')
+      switch (this.type) {
+        case 'WordAndDotGrammar':
+          regex = /([.\s])/
+      }
 
-    splittedString.forEach((subString, index) => {
-      const tokenType = this._determineTokenType(subString)
+      // TODO: If possible, fix/finalize regex in order to remove filter.
+      const splittedString = this.string
+        .split(regex)
+        .filter(w => w !== '' && w !== ' ')
 
-      tokenizedString.push({
-        tokenMatch: index,
-        tokenType: tokenType,
-        value: subString
+      splittedString.forEach((subString, index) => {
+        const tokenType = this._determineTokenType(subString)
+
+        tokenizedString.push({
+          tokenMatch: index,
+          tokenType: tokenType,
+          value: subString
+        })
       })
-    })
 
-    return tokenizedString
+      return tokenizedString
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   /**
@@ -54,15 +62,19 @@ export default class Tokenizer {
    * @returns {string} Type of the sub-string.
    */
   _determineTokenType (subString) {
-    let tokenType
+    try {
+      let tokenType
 
-    if (subString === '.') {
-      tokenType = 'DOT'
-    } else if (subString.length > 0) {
-      tokenType = 'WORD'
+      if (subString === '.') {
+        tokenType = 'DOT'
+      } else if (subString.length > 0) {
+        tokenType = 'WORD'
+      }
+
+      return tokenType
+    } catch (error) {
+      console.error(error)
     }
-
-    return tokenType
   }
 
   /**
