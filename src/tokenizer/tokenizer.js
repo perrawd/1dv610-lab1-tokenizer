@@ -32,6 +32,9 @@ export default class Tokenizer {
       switch (this.type) {
         case 'WordAndDotGrammar':
           regex = /([.\s])/
+          break
+        default:
+          throw new Error('Missing valid lexical grammatic type.')
       }
 
       // TODO: If possible, fix/finalize regex in order to remove filter.
