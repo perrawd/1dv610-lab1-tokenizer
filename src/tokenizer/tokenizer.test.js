@@ -58,14 +58,14 @@ test('test toStrictEqual word and dot grammar', () => {
   expect(arithmeticGrammar.tokenize()).toStrictEqual(arithmeticGrammarOutput)
 })
 
-test('test determineTokenType method (WORD)', () => {
+test('test determineTokenType method (NUMBER)', () => {
   expect(arithmeticGrammar._determineTokenType('ArithmeticGrammar', '3')).toBe('NUMBER')
 })
 
-test('test determineTokenType method (DOT)', () => {
+test('test determineTokenType method (ADD)', () => {
   expect(arithmeticGrammar._determineTokenType('ArithmeticGrammar', '+')).toBe('ADD')
 })
 
-test('test determineTokenType method (DOT)', () => {
+test('test determineTokenType method (NUMBER)', () => {
   expect(arithmeticGrammar._determineTokenType('ArithmeticGrammar', '2')).toBe('NUMBER')
 })
