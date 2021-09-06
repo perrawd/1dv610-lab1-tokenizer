@@ -13,6 +13,11 @@ export default class Tokenizer {
   constructor (type, string) {
     this.type = type
     this.string = string
+
+    this.lexicalGrammar = this.tokenize()
+
+    this.currentIndex = 0
+    this.currentToken = this.lexicalGrammar[this.currentIndex]
   }
 
   /**
@@ -43,7 +48,7 @@ export default class Tokenizer {
       // TODO: If possible, fix/finalize regex in order to remove filter.
       const splittedString = this.string
         .split(regex)
-        .filter(w => w !== '' && w !== ' ')
+        .filter(token => token !== '' && token !== ' ')
 
       splittedString.forEach((subString, index) => {
         const tokenType = this._determineTokenType(this.type, subString)
@@ -72,6 +77,7 @@ export default class Tokenizer {
     try {
       let tokenType
 
+      // TODO: Look into refactoring this.
       switch (type) {
         case 'WordAndDotGrammar':
           if (subString === '.') {
@@ -97,6 +103,37 @@ export default class Tokenizer {
       return tokenType
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  /**
+   * Move current to next.
+   *
+   * @param {string} direction The direction to move the pointer of the current token to.
+   *
+   */
+  moveTo (direction) {
+    try {
+      switch (direction) {
+        case 'previous':
+          if ((this.currentIndex - 1) < 0) {
+            throw new Error('First index reached')
+          }
+          this.currentIndex -= 1
+          this.currentToken = this.lexicalGrammar[this.currentIndex]
+          break
+        case 'next':
+          if ((this.currentIndex + 1) > (this.lexicalGrammar.length - 1)) {
+            throw new Error('Last index reached')
+          }
+          this.currentIndex += 1
+          this.currentToken = this.lexicalGrammar[this.currentIndex]
+          break
+        default:
+          throw new Error('Invalid direction')
+      }
+    } catch (error) {
+      console.error(error.message)
     }
   }
 

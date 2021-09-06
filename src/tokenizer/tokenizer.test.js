@@ -69,3 +69,49 @@ test('test determineTokenType method (ADD)', () => {
 test('test determineTokenType method (NUMBER)', () => {
   expect(arithmeticGrammar._determineTokenType('ArithmeticGrammar', '2')).toBe('NUMBER')
 })
+
+/*
+ * currentToken test cases
+ */
+test('test currentToken (wordDotGrammar)', () => {
+  expect(wordDotGrammar.currentToken.tokenMatch).toBe(0)
+})
+
+test('test currentToken (arithmeticGrammar)', () => {
+  expect(arithmeticGrammar.currentToken.tokenMatch).toBe(0)
+})
+
+/*
+ * moveTo method test cases
+ */
+test('test moveTo(`next`)', () => {
+  arithmeticGrammar.moveTo('next')
+  expect(arithmeticGrammar.currentToken.value).toBe('+')
+})
+
+test('test moveTo(`next`)', () => {
+  arithmeticGrammar.moveTo('next')
+  expect(arithmeticGrammar.currentToken.value).toBe('2')
+})
+
+test('test moveTo(`previous`)', () => {
+  arithmeticGrammar.moveTo('previous')
+  expect(arithmeticGrammar.currentToken.value).toBe('+')
+})
+
+test('test moveTo(`previous`)', () => {
+  arithmeticGrammar.moveTo('previous')
+  expect(arithmeticGrammar.currentToken.value).toBe('3')
+})
+
+test('test moveTo()', () => {
+  expect(() => {
+    arithmeticGrammar.moveTo('up').toThrow('Invalid direction')
+  })
+})
+
+test('test moveTo(`up`)', () => {
+  expect(() => {
+    arithmeticGrammar.moveTo().toThrow('Invalid direction')
+  })
+})
