@@ -22,6 +22,14 @@ Tokenizes a string and returns an array of objects with the attributes:
 
 Returns: Array of objects.
 
+### moveTo()
+Sets the pointer of the current token to either previous or next in the lexical grammar.
+Throws error if invalid direction argument is provided. 
+
+Parameters: 
+- {string} previous: The previous token.
+- {string} next: The next token.
+
 ### printTable(input)
 Prints a table of the tokenized string. 
 

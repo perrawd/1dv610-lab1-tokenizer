@@ -67,6 +67,37 @@ export default class Tokenizer {
   }
 
   /**
+   * Move current to next.
+   *
+   * @param {string} direction The direction to move the pointer of the current token to.
+   *
+   */
+  moveTo (direction) {
+    try {
+      switch (direction) {
+        case 'previous':
+          if ((this.currentIndex - 1) < 0) {
+            throw new Error('First index reached')
+          }
+          this.currentIndex -= 1
+          this.currentToken = this.lexicalGrammar[this.currentIndex]
+          break
+        case 'next':
+          if ((this.currentIndex + 1) > (this.lexicalGrammar.length - 1)) {
+            throw new Error('Last index reached')
+          }
+          this.currentIndex += 1
+          this.currentToken = this.lexicalGrammar[this.currentIndex]
+          break
+        default:
+          throw new Error('Invalid direction')
+      }
+    } catch (error) {
+      console.error(error.message)
+    }
+  }
+
+  /**
    * Determines the token-type of a string.
    *
    * @param {string} type The sub-string to determine type for.
@@ -103,37 +134,6 @@ export default class Tokenizer {
       return tokenType
     } catch (error) {
       console.error(error)
-    }
-  }
-
-  /**
-   * Move current to next.
-   *
-   * @param {string} direction The direction to move the pointer of the current token to.
-   *
-   */
-  moveTo (direction) {
-    try {
-      switch (direction) {
-        case 'previous':
-          if ((this.currentIndex - 1) < 0) {
-            throw new Error('First index reached')
-          }
-          this.currentIndex -= 1
-          this.currentToken = this.lexicalGrammar[this.currentIndex]
-          break
-        case 'next':
-          if ((this.currentIndex + 1) > (this.lexicalGrammar.length - 1)) {
-            throw new Error('Last index reached')
-          }
-          this.currentIndex += 1
-          this.currentToken = this.lexicalGrammar[this.currentIndex]
-          break
-        default:
-          throw new Error('Invalid direction')
-      }
-    } catch (error) {
-      console.error(error.message)
     }
   }
 
