@@ -85,33 +85,33 @@ test('test currentToken (arithmeticGrammar)', () => {
  * moveTo method test cases
  */
 test('test moveTo(`next`)', () => {
-  arithmeticGrammar.moveTo('next')
+  arithmeticGrammar.moveCurrentTokenTo('next')
   expect(arithmeticGrammar.currentToken.value).toBe('+')
 })
 
 test('test moveTo(`next`)', () => {
-  arithmeticGrammar.moveTo('next')
+  arithmeticGrammar.moveCurrentTokenTo('next')
   expect(arithmeticGrammar.currentToken.value).toBe('2')
 })
 
 test('test moveTo(`previous`)', () => {
-  arithmeticGrammar.moveTo('previous')
+  arithmeticGrammar.moveCurrentTokenTo('previous')
   expect(arithmeticGrammar.currentToken.value).toBe('+')
 })
 
 test('test moveTo(`previous`)', () => {
-  arithmeticGrammar.moveTo('previous')
+  arithmeticGrammar.moveCurrentTokenTo('previous')
   expect(arithmeticGrammar.currentToken.value).toBe('3')
 })
 
 test('test moveTo()', () => {
   expect(() => {
-    arithmeticGrammar.moveTo('up').toThrow('Invalid direction')
+    arithmeticGrammar.moveCurrentTokenTo('up').toThrow('Invalid direction')
   })
 })
 
 test('test moveTo(`up`)', () => {
   expect(() => {
-    arithmeticGrammar.moveTo().toThrow('Invalid direction')
+    arithmeticGrammar.moveCurrentTokenTo().toThrow('Invalid direction')
   })
 })

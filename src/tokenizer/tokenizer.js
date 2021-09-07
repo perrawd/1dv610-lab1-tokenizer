@@ -72,7 +72,7 @@ export default class Tokenizer {
    * @param {string} direction The direction to move the pointer of the current token to.
    *
    */
-  moveTo (direction) {
+  moveCurrentTokenTo (direction) {
     try {
       switch (direction) {
         case 'previous':
