@@ -1,3 +1,5 @@
+import TokenizedSubString from './tokenizedSubString.js'
+
 /**
  * Creates a tokenizer.
  *
@@ -52,12 +54,9 @@ export default class Tokenizer {
 
       splittedString.forEach((subString, index) => {
         const tokenType = this._determineTokenType(this.type, subString)
+        const { token } = new TokenizedSubString(index, tokenType, subString)
 
-        tokenizedString.push({
-          tokenMatch: index,
-          tokenType: tokenType,
-          value: subString
-        })
+        tokenizedString.push(token)
       })
 
       return tokenizedString

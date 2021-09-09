@@ -3,9 +3,9 @@ A module that performs lexical analysis for tokenizing strings.
 An assignment for the course 1DV610 Introduction to software quality at Linnaeus University.  
 
 ## ⛩️ Constructor 
-### constructor(type, string)
+### constructor(GRAMMAR, string)
 Parameters: 
-- {string} type: The type of tokenization.
+- {string} GRAMMAR: The type of tokenization. Enums
 - {string} string: The string to be tokenized.
 
 Attributes:
@@ -42,3 +42,16 @@ Prints a table of the tokenized string.
 
 ✍️ Coding standard:
 - @lnu/eslint-config
+
+## Notes: 
+- This Tokenizer will not handle whitespaces
+
+## Classes
+
+### TokenizedSubString
+Creates a new object representing a token of a substring. 
+
+Constructor parameters: 
+- {string} tokenMatch The index of token.
+- {string} tokenType The tokenType.
+- {string} value The subString.
