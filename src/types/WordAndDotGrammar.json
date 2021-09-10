@@ -1,0 +1,8 @@
+{
+  "grammarType": "WordAndDotGrammar",
+  "splitPattern": "/([.\\s])/",
+  "grammars": {
+    "WORD": "/^[\\w|åäöÅÄÖ]+/",
+    "DOT": "/^\\./ "
+  }
+}
