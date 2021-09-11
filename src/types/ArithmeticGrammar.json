@@ -1,7 +1,7 @@
 {
-  "grammarType": "ArithmeticGrammar",
+  "grammarName": "ArithmeticGrammar",
   "splitPattern": "/(?<=[-+*/])|(?=[-+*/])/",
-  "grammars": {
+  "grammarTypes": {
     "NUMBER": "/^[0-9]+(\\.([0-9])+)?/",
     "ADD": "/^[+]/",
     "MUL": "/^[*]/"
