@@ -49,7 +49,10 @@ export default class Tokenizer {
         }
       })
 
-      return tokenizedString
+      return [
+        ...tokenizedString,
+        new TokenizedSubString(splittedString.length, 'END', '').token
+      ]
     } catch (error) {
       console.error(error)
     }
