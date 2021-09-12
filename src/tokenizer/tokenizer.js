@@ -13,6 +13,7 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   constructor (type, string) {
+    // Assigns key value pairs of the Grammar type to the object.
     Object.assign(this, type)
     this.string = string
   }

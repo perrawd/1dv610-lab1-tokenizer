@@ -14,8 +14,8 @@ const testArithmetic = new GrammaticType(ARITHMETIC)
 /*
  * Initialize objects.
  */
-const wordDotGrammar = new Tokenizer(testWordAndGrammar, 'Meningen består av ord.')
-const arithmeticGrammar = new Tokenizer(testArithmetic, '32+2')
+const wordDotGrammar = new Tokenizer(testWordAndGrammar, 'Meningen består av ord.').tokenize()
+const arithmeticGrammar = new Tokenizer(testArithmetic, '32+2').tokenize()
 
 /*
  * Expected outputs.
@@ -25,35 +25,52 @@ const wordDotGrammarOutput = [
   { tokenMatch: 1, tokenType: 'WORD', value: 'består' },
   { tokenMatch: 2, tokenType: 'WORD', value: 'av' },
   { tokenMatch: 3, tokenType: 'WORD', value: 'ord' },
-  { tokenMatch: 4, tokenType: 'DOT', value: '.' }
+  { tokenMatch: 4, tokenType: 'DOT', value: '.' },
+  { tokenMatch: 5, tokenType: 'END', value: '' }
 ]
 
 const arithmeticGrammarOutput = [
   { tokenMatch: 0, tokenType: 'NUMBER', value: '32' },
   { tokenMatch: 1, tokenType: 'ADD', value: '+' },
-  { tokenMatch: 2, tokenType: 'NUMBER', value: '2' }
+  { tokenMatch: 2, tokenType: 'NUMBER', value: '2' },
+  { tokenMatch: 3, tokenType: 'END', value: '' }
 ]
 
 /*
  * wordDotGrammar test cases
  */
+test('test END token in word and dot grammar', () => {
+  expect(wordDotGrammar[wordDotGrammar.length - 1].tokenType).toBe('END')
+})
+
+test('test END token in arithmetic grammar', () => {
+  expect(arithmeticGrammar[arithmeticGrammar.length - 1].tokenType).toBe('END')
+})
+
+/*
+ * wordDotGrammar test cases
+ */
 test('test toMatchObject word and dot grammar', () => {
-  expect(wordDotGrammar.tokenize()).toMatchObject(wordDotGrammarOutput)
+  expect(wordDotGrammar).toMatchObject(wordDotGrammarOutput)
 })
 
 test('test toStrictEqual word and dot grammar', () => {
-  expect(wordDotGrammar.tokenize()).toStrictEqual(wordDotGrammarOutput)
+  expect(wordDotGrammar).toStrictEqual(wordDotGrammarOutput)
+})
+
+test('test toStrictEqual word and dot grammar', () => {
+  expect(wordDotGrammar).toStrictEqual(wordDotGrammarOutput)
 })
 
 /*
  * arithmeticGrammar test cases
  */
 test('test toMatchObject arithmetic grammar', () => {
-  expect(arithmeticGrammar.tokenize()).toMatchObject(arithmeticGrammarOutput)
+  expect(arithmeticGrammar).toMatchObject(arithmeticGrammarOutput)
 })
 
 test('test toStrictEqual arithmetic grammar', () => {
-  expect(arithmeticGrammar.tokenize()).toStrictEqual(arithmeticGrammarOutput)
+  expect(arithmeticGrammar).toStrictEqual(arithmeticGrammarOutput)
 })
 
 /*
