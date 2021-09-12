@@ -3,13 +3,19 @@
  *
  */
 import { expect } from '@jest/globals'
+import GrammaticType from '../types/GrammarType.js'
+import GRAMMAR from './grammar.js'
 import Tokenizer from './tokenizer'
+
+const { WORD_AND_DOT, ARITHMETIC } = GRAMMAR
+const testWordAndGrammar = new GrammaticType(WORD_AND_DOT)
+const testArithmetic = new GrammaticType(ARITHMETIC)
 
 /*
  * Initialize objects.
  */
-const wordDotGrammar = new Tokenizer('WordAndDotGrammar', 'Meningen består av ord.')
-const arithmeticGrammar = new Tokenizer('ArithmeticGrammar', '3+2')
+const wordDotGrammar = new Tokenizer(testWordAndGrammar, 'Meningen består av ord.')
+const arithmeticGrammar = new Tokenizer(testArithmetic, '32+2')
 
 /*
  * Expected outputs.
@@ -23,7 +29,7 @@ const wordDotGrammarOutput = [
 ]
 
 const arithmeticGrammarOutput = [
-  { tokenMatch: 0, tokenType: 'NUMBER', value: '3' },
+  { tokenMatch: 0, tokenType: 'NUMBER', value: '32' },
   { tokenMatch: 1, tokenType: 'ADD', value: '+' },
   { tokenMatch: 2, tokenType: 'NUMBER', value: '2' }
 ]
@@ -39,35 +45,15 @@ test('test toStrictEqual word and dot grammar', () => {
   expect(wordDotGrammar.tokenize()).toStrictEqual(wordDotGrammarOutput)
 })
 
-test('test determineTokenType method (WORD)', () => {
-  expect(wordDotGrammar._determineTokenType('WordAndDotGrammar', 'Ord')).toBe('WORD')
-})
-
-test('test determineTokenType method (DOT)', () => {
-  expect(wordDotGrammar._determineTokenType('WordAndDotGrammar', '.')).toBe('DOT')
-})
-
 /*
  * arithmeticGrammar test cases
  */
-test('test toMatchObject word and dot grammar', () => {
+test('test toMatchObject arithmetic grammar', () => {
   expect(arithmeticGrammar.tokenize()).toMatchObject(arithmeticGrammarOutput)
 })
 
-test('test toStrictEqual word and dot grammar', () => {
+test('test toStrictEqual arithmetic grammar', () => {
   expect(arithmeticGrammar.tokenize()).toStrictEqual(arithmeticGrammarOutput)
-})
-
-test('test determineTokenType method (NUMBER)', () => {
-  expect(arithmeticGrammar._determineTokenType('ArithmeticGrammar', '3')).toBe('NUMBER')
-})
-
-test('test determineTokenType method (ADD)', () => {
-  expect(arithmeticGrammar._determineTokenType('ArithmeticGrammar', '+')).toBe('ADD')
-})
-
-test('test determineTokenType method (NUMBER)', () => {
-  expect(arithmeticGrammar._determineTokenType('ArithmeticGrammar', '2')).toBe('NUMBER')
 })
 
 /*
