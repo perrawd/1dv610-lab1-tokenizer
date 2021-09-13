@@ -48,8 +48,8 @@ export default class Tokenizer {
    */
   _matchGrammarTypesTo (subString) {
     const munches = []
-    for (const [key, value] in Object.entries(this.grammarTypes)) {
-      const index = 0
+    for (const [key, value] of Object.entries(this.grammarTypes)) {
+      const index = 1
       if (new RegExp(value).test(subString)) {
         const { token } = new TokenizedSubString(
           index,
@@ -70,17 +70,22 @@ export default class Tokenizer {
    * @returns {object} Array.
    */
   _getMaximumMunch (munches) {
-    const result = munches.sort((a, b) => a.subString.length - b.subString.length)
+    const result = munches.sort((a, b) => a.value.length - b.value.length)
     return result[0]
   }
 
   /**
    * Adds token to the lexical grammar array.
    *
-   * @param {string} token token.
+   * @param {object} subString token.
    * @memberof Tokenizer
    */
-  _addToLexicalGrammar (token) {
-
+  _addToLexicalGrammar (subString) {
+    const { token } = new TokenizedSubString(
+      this.lexicalGrammar.length,
+      subString.tokenType,
+      subString.value
+    )
+    this.lexicalGrammar.push(token)
   }
 }
