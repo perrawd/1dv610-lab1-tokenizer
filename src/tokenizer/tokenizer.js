@@ -47,7 +47,19 @@ export default class Tokenizer {
    * @returns {Array} Array.
    */
   _matchGrammarTypesTo (subString) {
-
+    const munches = []
+    for (const [key, value] in Object.entries(this.grammarTypes)) {
+      const index = 0
+      if (new RegExp(value).test(subString)) {
+        const { token } = new TokenizedSubString(
+          index,
+          key,
+          subString
+        )
+        munches.push(token)
+      }
+    }
+    return munches
   }
 
   /**
