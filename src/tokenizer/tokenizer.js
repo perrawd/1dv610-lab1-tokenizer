@@ -70,7 +70,8 @@ export default class Tokenizer {
    * @returns {object} Array.
    */
   _getMaximumMunch (munches) {
-
+    const result = munches.sort((a, b) => a.subString.length - b.subString.length)
+    return result[0]
   }
 
   /**
