@@ -17,79 +17,57 @@ export default class Tokenizer {
     Object.assign(this, type)
     this.string = string
 
-    this.lexicalGrammar = this.tokenize()
+    this.lexicalGrammar = []
+    this.tokenizeSubString()
 
     this.activeTokenIndex = 0
     this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
   }
 
   /**
-   * Tokenizes a string.
+   * Tokenizes a substring.
    *
-   * @returns {Array} array
    * @memberof Tokenizer
    */
-  tokenize () {
-    try {
-      if (!this.string.length) {
-        throw new Error('Empty string provided. Please provide a valid string.')
-      }
-      const splittedString = this.string
-        .split(new RegExp(this.splitPattern))
-        .filter(token => token !== '' && token !== ' ')
+  tokenizeSubString () {
+    this.string.trimStart()
+    const subString = this.string.slice(0, this.string.search(this.splitPattern))
+    this.string = this.string.replace(subString, '')
 
-      const tokenizedString = []
-
-      splittedString.forEach((subString, index) => {
-        for (const property in this.grammarTypes) {
-          if (new RegExp(this.grammarTypes[property]).test(subString)) {
-            const { token } = new TokenizedSubString(
-              index,
-              property,
-              subString
-            )
-            tokenizedString.push(token)
-            break
-          }
-        }
-      })
-
-      return [
-        ...tokenizedString,
-        new TokenizedSubString(splittedString.length, 'END', '').token
-      ]
-    } catch (error) {
-      console.error(error)
-    }
+    const munches = this._matchGrammarTypesTo(subString)
+    const token = this._getMaximumMunch(munches)
+    this._addToLexicalGrammar(token)
   }
 
   /**
-   * Move current to next.
+   * Matches grammar types a substring.
    *
-   * @param {string} direction The direction to move the pointer of the current token to.
-   *
+   * @param {string} subString string.
+   * @memberof Tokenizer
+   * @returns {Array} Array.
    */
-  moveActiveTokenTo (direction) {
-    try {
-      switch (direction) {
-        case 'previous':
-          if ((this.activeTokenIndex - 1) < 0) {
-            throw new Error('First index reached')
-          }
-          this.activeTokenIndex -= 1
-          break
-        case 'next':
-          if ((this.activeTokenIndex + 1) > (this.lexicalGrammar.length - 1)) {
-            throw new Error('Last index reached')
-          }
-          this.activeTokenIndex += 1
-          break
-        default:
-          throw new Error('Invalid direction')
-      }
-      this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
-    } catch (error) {
-      console.error(error.message)
-    }
+  _matchGrammarTypesTo (subString) {
+
+  }
+
+  /**
+   * Gets maximum munch from an array of munches.
+   *
+   * @param {Array} munches munches.
+   * @memberof Tokenizer
+   * @returns {object} Array.
+   */
+  _getMaximumMunch (munches) {
+
+  }
+
+  /**
+   * Adds token to the lexical grammar array.
+   *
+   * @param {string} token token.
+   * @memberof Tokenizer
+   */
+  _addToLexicalGrammar (token) {
+
   }
 }
