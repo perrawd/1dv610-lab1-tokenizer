@@ -14,8 +14,8 @@ const testArithmetic = new GrammaticType(ARITHMETIC)
 /*
  * Initialize objects.
  */
-const wordDotGrammar = new Tokenizer(testWordAndGrammar, 'Meningen består av ord.').tokenize()
-const arithmeticGrammar = new Tokenizer(testArithmetic, '32+2').tokenize()
+const wordDotGrammar = new Tokenizer(testWordAndGrammar, 'Meningen består av ord.')
+const arithmeticGrammar = new Tokenizer(testArithmetic, '32+2')
 
 /*
  * Expected outputs.
@@ -40,81 +40,81 @@ const arithmeticGrammarOutput = [
  * wordDotGrammar test cases
  */
 test('test END token in word and dot grammar', () => {
-  expect(wordDotGrammar[wordDotGrammar.length - 1].tokenType).toBe('END')
+  expect(wordDotGrammar.lexicalGrammar[wordDotGrammar.lexicalGrammar.length - 1].tokenType).toBe('END')
 })
 
 test('test END token in arithmetic grammar', () => {
-  expect(arithmeticGrammar[arithmeticGrammar.length - 1].tokenType).toBe('END')
+  expect(arithmeticGrammar.lexicalGrammar[arithmeticGrammar.lexicalGrammar.length - 1].tokenType).toBe('END')
 })
 
 /*
  * wordDotGrammar test cases
  */
 test('test toMatchObject word and dot grammar', () => {
-  expect(wordDotGrammar).toMatchObject(wordDotGrammarOutput)
+  expect(wordDotGrammar.lexicalGrammar).toMatchObject(wordDotGrammarOutput)
 })
 
 test('test toStrictEqual word and dot grammar', () => {
-  expect(wordDotGrammar).toStrictEqual(wordDotGrammarOutput)
+  expect(wordDotGrammar.lexicalGrammar).toStrictEqual(wordDotGrammarOutput)
 })
 
 test('test toStrictEqual word and dot grammar', () => {
-  expect(wordDotGrammar).toStrictEqual(wordDotGrammarOutput)
+  expect(wordDotGrammar.lexicalGrammar).toStrictEqual(wordDotGrammarOutput)
 })
 
 /*
  * arithmeticGrammar test cases
  */
 test('test toMatchObject arithmetic grammar', () => {
-  expect(arithmeticGrammar).toMatchObject(arithmeticGrammarOutput)
+  expect(arithmeticGrammar.lexicalGrammar).toMatchObject(arithmeticGrammarOutput)
 })
 
 test('test toStrictEqual arithmetic grammar', () => {
-  expect(arithmeticGrammar).toStrictEqual(arithmeticGrammarOutput)
+  expect(arithmeticGrammar.lexicalGrammar).toStrictEqual(arithmeticGrammarOutput)
 })
 
 /*
- * currentToken test cases
+ * activeToken test cases
  */
-test('test currentToken (wordDotGrammar)', () => {
-  expect(wordDotGrammar.currentToken.tokenMatch).toBe(0)
+test('test activeToken (wordDotGrammar)', () => {
+  expect(wordDotGrammar.activeToken.tokenMatch).toBe(0)
 })
 
-test('test currentToken (arithmeticGrammar)', () => {
-  expect(arithmeticGrammar.currentToken.tokenMatch).toBe(0)
+test('test activeToken (arithmeticGrammar)', () => {
+  expect(arithmeticGrammar.activeToken.tokenMatch).toBe(0)
 })
 
 /*
  * moveTo method test cases
  */
 test('test moveTo(`next`)', () => {
-  arithmeticGrammar.moveCurrentTokenTo('next')
-  expect(arithmeticGrammar.currentToken.value).toBe('+')
+  arithmeticGrammar.moveActiveTokenTo('next')
+  expect(arithmeticGrammar.activeToken.value).toBe('+')
 })
 
 test('test moveTo(`next`)', () => {
-  arithmeticGrammar.moveCurrentTokenTo('next')
-  expect(arithmeticGrammar.currentToken.value).toBe('2')
+  arithmeticGrammar.moveActiveTokenTo('next')
+  expect(arithmeticGrammar.activeToken.value).toBe('2')
 })
 
 test('test moveTo(`previous`)', () => {
-  arithmeticGrammar.moveCurrentTokenTo('previous')
-  expect(arithmeticGrammar.currentToken.value).toBe('+')
+  arithmeticGrammar.moveActiveTokenTo('previous')
+  expect(arithmeticGrammar.activeToken.value).toBe('+')
 })
 
 test('test moveTo(`previous`)', () => {
-  arithmeticGrammar.moveCurrentTokenTo('previous')
-  expect(arithmeticGrammar.currentToken.value).toBe('3')
+  arithmeticGrammar.moveActiveTokenTo('previous')
+  expect(arithmeticGrammar.activeToken.value).toBe('32')
 })
 
 test('test moveTo()', () => {
   expect(() => {
-    arithmeticGrammar.moveCurrentTokenTo('up').toThrow('Invalid direction')
+    arithmeticGrammar.moveActiveTokenTo('up').toThrow('Invalid direction')
   })
 })
 
 test('test moveTo(`up`)', () => {
   expect(() => {
-    arithmeticGrammar.moveCurrentTokenTo().toThrow('Invalid direction')
+    arithmeticGrammar.moveActiveTokenTo().toThrow('Invalid direction')
   })
 })

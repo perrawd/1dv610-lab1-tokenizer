@@ -16,6 +16,11 @@ export default class Tokenizer {
     // Assigns key value pairs of the Grammar type to the object.
     Object.assign(this, type)
     this.string = string
+
+    this.lexicalGrammar = this.tokenize()
+
+    this.activeTokenIndex = 0
+    this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
   }
 
   /**
@@ -29,7 +34,6 @@ export default class Tokenizer {
       if (!this.string.length) {
         throw new Error('Empty string provided. Please provide a valid string.')
       }
-
       const splittedString = this.string
         .split(new RegExp(this.splitPattern))
         .filter(token => token !== '' && token !== ' ')
