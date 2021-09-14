@@ -25,6 +25,23 @@ export default class Tokenizer {
   }
 
   /**
+   * Move active token to previous.
+   *
+   * @memberof Tokenizer
+   */
+  getPreviousToken () {
+    try {
+      if ((this.activeTokenIndex - 1) < 0) {
+        throw new Error('First index reached')
+      }
+      this.activeTokenIndex -= 1
+      this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  /**
    * Tokenize the next substring.
    *
    * @memberof Tokenizer
