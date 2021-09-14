@@ -47,9 +47,25 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   getNextToken () {
-    this.tokenizeSubString()
-    this.activeTokenIndex++
-    this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
+    try {
+      if (this.lexicalGrammar[this.lexicalGrammar.length - 1].tokenType === 'END') {
+        throw new Error('Last TOKEN')
+      }
+      if (!this.string.length) {
+        const endToken = {
+          index: this.lexicalGrammar.length,
+          tokenType: 'END',
+          value: 'END'
+        }
+        this._addToLexicalGrammar(endToken)
+      } else {
+        this.tokenizeSubString()
+      }
+      this.activeTokenIndex++
+      this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   /**
@@ -97,6 +113,7 @@ export default class Tokenizer {
    * @returns {object} Array.
    */
   _getMaximumMunch (munches) {
+    console.log(munches)
     const result = munches.sort((a, b) => a.value.length - b.value.length)
     return result[0]
   }
