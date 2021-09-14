@@ -25,15 +25,25 @@ export default class Tokenizer {
   }
 
   /**
+   * Tokenize the next substring.
+   *
+   * @memberof Tokenizer
+   */
+  getNextToken () {
+    this.tokenizeSubString()
+    this.activeTokenIndex++
+    this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
+  }
+
+  /**
    * Tokenizes a substring.
    *
    * @memberof Tokenizer
    */
   tokenizeSubString () {
-    this.string.trimStart()
+    this.string = this.string.trimStart()
     const subString = this.string.slice(0, this.string.search(this.splitPattern))
     this.string = this.string.replace(subString, '')
-
     const munches = this._matchGrammarTypesTo(subString)
     const token = this._getMaximumMunch(munches)
     this._addToLexicalGrammar(token)
