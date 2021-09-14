@@ -42,7 +42,7 @@ export default class Tokenizer {
    */
   tokenizeSubString () {
     this.string = this.string.trimStart()
-    const subString = this.string.slice(0, this.string.search(this.splitPattern))
+    const subString = this.string.slice(0, this.string.search(this.splitPattern) + 1)
     this.string = this.string.replace(subString, '')
     const munches = this._matchGrammarTypesTo(subString)
     const token = this._getMaximumMunch(munches)
