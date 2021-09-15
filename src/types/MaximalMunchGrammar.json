@@ -1,0 +1,11 @@
+{
+  "grammarName": "MaximalMunchGrammar",
+  "splitPattern": "[-+*/]|\\S(?![0-9]*[.]*[0-9])",
+  "grammarTypes": {
+    "FLOAT": "^[0-9]+\\.[0-9]+",
+    "INTEGER": "^[0-9]+",
+    "ADD": "^[+]",
+    "SUB": "^[-]",
+    "MUL": "^[*]"
+  }
+}

@@ -14,7 +14,8 @@
  */
 const GRAMMAR = Object.freeze({
   WORD_AND_DOT: 'WordAndDotGrammar',
-  ARITHMETIC: 'ArithmeticGrammar'
+  ARITHMETIC: 'ArithmeticGrammar',
+  MAXIMAL_MUNCH: 'MaximalMunchGrammar'
 })
 
 export default GRAMMAR

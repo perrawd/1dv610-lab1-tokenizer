@@ -97,7 +97,7 @@ export default class Tokenizer {
         const { token } = new TokenizedSubString(
           index,
           key,
-          subString
+          subString.match(value)[0]
         )
         munches.push(token)
       }
@@ -114,7 +114,7 @@ export default class Tokenizer {
    */
   _getMaximumMunch (munches) {
     console.log(munches)
-    const result = munches.sort((a, b) => a.value.length - b.value.length)
+    const result = munches.sort((a, b) => b.value.length - a.value.length)
     return result[0]
   }
 
