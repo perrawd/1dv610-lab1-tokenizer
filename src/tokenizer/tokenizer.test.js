@@ -3,9 +3,10 @@ import GrammaticType from '../types/GrammarType.js'
 import GRAMMAR from './grammar.js'
 import Tokenizer from './tokenizer'
 
-const { WORD_AND_DOT } = GRAMMAR
+const { WORD_AND_DOT, ARITHMETIC } = GRAMMAR
 
 const wordAndDotGrammar = new GrammaticType(WORD_AND_DOT)
+const arithmeticGrammar = new GrammaticType(ARITHMETIC)
 
 /**
  * Operates and calls each sequence.
@@ -134,5 +135,54 @@ test('TC.11', () => {
   const TC10 = new Tokenizer(wordAndDotGrammar, '!')
   expect(() => {
     TC10.toThrow('No matches found for this subtoken!')
+  })
+})
+
+/*
+ * arithmeticGrammar test cases
+ */
+test('TC.12', () => {
+  const TC12 = new Tokenizer(arithmeticGrammar, '3')
+  expect(TC12.activeToken).toMatchObject({
+    tokenMatch: 0,
+    tokenType: 'NUMBER',
+    value: '3'
+  })
+})
+
+test('TC.13', () => {
+  const TC13 = new Tokenizer(arithmeticGrammar, '3.14')
+  expect(TC13.activeToken).toMatchObject({
+    tokenMatch: 0,
+    tokenType: 'NUMBER',
+    value: '3.14'
+  })
+})
+
+test('TC.14', () => {
+  const TC14 = new Tokenizer(arithmeticGrammar, '3 + 54 * 4')
+  sequenceOperator(TC14, '>>>')
+  expect(TC14.activeToken).toMatchObject({
+    tokenMatch: 3,
+    tokenType: 'MUL',
+    value: '*'
+  })
+})
+
+test('TC.15', () => {
+  const TC15 = new Tokenizer(arithmeticGrammar, '3+5 # 4')
+  sequenceOperator(TC15, '>>>')
+  expect(() => {
+    TC15.toThrow('No matches found for this subtoken!')
+  })
+})
+
+test('TC.16', () => {
+  const TC16 = new Tokenizer(arithmeticGrammar, '3.0+54.1     + 4.2')
+  sequenceOperator(TC16, '><>>>')
+  expect(TC16.activeToken).toMatchObject({
+    tokenMatch: 3,
+    tokenType: 'ADD',
+    value: '+'
   })
 })
