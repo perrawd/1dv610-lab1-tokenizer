@@ -37,7 +37,8 @@ export default class Tokenizer {
       this.activeTokenIndex -= 1
       this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
     } catch (error) {
-      console.error(error)
+      console.error(error.message)
+      process.exitCode = 1
     }
   }
 
@@ -64,7 +65,8 @@ export default class Tokenizer {
       this.activeTokenIndex++
       this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
     } catch (error) {
-      console.error(error)
+      console.error(error.message)
+      process.exitCode = 1
     }
   }
 
@@ -74,12 +76,26 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   tokenizeSubString () {
-    this.string = this.string.trimStart()
-    const subString = this.string.slice(0, this.string.search(this.splitPattern) + 1)
-    this.string = this.string.replace(subString, '')
-    const munches = this._matchGrammarTypesTo(subString)
-    const token = this._getMaximumMunch(munches)
-    this._addToLexicalGrammar(token)
+    try {
+      this.string = this.string.trimStart()
+      if (!this.string.length) {
+        const endToken = {
+          index: this.lexicalGrammar.length,
+          tokenType: 'END',
+          value: 'END'
+        }
+        this._addToLexicalGrammar(endToken)
+      } else {
+        const subString = this.string.slice(0, this.string.search(this.splitPattern) + 1)
+        this.string = this.string.replace(subString, '')
+        const munches = this._matchGrammarTypesTo(subString)
+        const token = this._getMaximumMunch(munches)
+        this._addToLexicalGrammar(token)
+      }
+    } catch (error) {
+      console.error(error.message)
+      process.exitCode = 1
+    }
   }
 
   /**
@@ -108,7 +124,8 @@ export default class Tokenizer {
       }
       return munches
     } catch (error) {
-      console.error(error)
+      console.error(error.message)
+      process.exitCode = 1
     }
   }
 
@@ -120,7 +137,7 @@ export default class Tokenizer {
    * @returns {object} Array.
    */
   _getMaximumMunch (munches) {
-    console.log(munches)
+    // console.log(munches)
     const result = munches.sort((a, b) => b.value.length - a.value.length)
     return result[0]
   }
