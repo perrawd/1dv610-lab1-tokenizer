@@ -8,8 +8,8 @@ export default class Tokenizer {
   /**
    * Creates an instance of Tokenizer.
    *
-   * @param {*} type The Grammatic type.
-   * @param {*} string The string to be tokenized.
+   * @param {object} type The Grammatic type.
+   * @param {string} string The string to be tokenized.
    * @memberof Tokenizer
    */
   constructor (type, string) {
@@ -18,7 +18,7 @@ export default class Tokenizer {
     this.string = string
 
     this.lexicalGrammar = []
-    this.tokenizeSubString()
+    this._tokenizeString()
 
     this.activeTokenIndex = 0
     this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
@@ -29,33 +29,15 @@ export default class Tokenizer {
    *
    * @memberof Tokenizer
    */
-  tokenizeSubString () {
+  _tokenizeString () {
     try {
-      this.string = this._trimString()
-      if (this._isEmpty(this.string)) {
-        const endToken = this._createNewTokenWith(this.lexicalGrammar.length, 'END', 'END')
-        this._addToLexicalGrammar(endToken)
-      } else {
-        const subString = this._getSubStringFrom(this.string)
-        this._cutSubStringFromString(subString)
-        const munches = this._matchGrammarTypesTo(subString)
-        const token = this._getMaximumMunch(munches)
-        this._addToLexicalGrammar(token)
-      }
+      this._isEmpty(this.string)
+        ? this._addEndToken()
+        : this._tokenizeSubString()
     } catch (error) {
       console.error(`Error: ${error.message}`)
       process.exitCode = 1
     }
-  }
-
-  /**
-   * Trim a string.
-   *
-   * @returns {string} Trimmed string.
-   * @memberof Tokenizer
-   */
-  _trimString () {
-    return this.string.trimStart()
   }
 
   /**
@@ -66,7 +48,44 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   _isEmpty (str) {
-    return !str.length
+    return !str.trim().length
+  }
+
+  /**
+   * Adds a END token to the Lexical Grammar.
+   *
+   * @memberof Tokenizer
+   */
+  _addEndToken () {
+    const endToken = this._createNewTokenWith(
+      this.lexicalGrammar.length,
+      'END',
+      'END'
+    )
+    this._addToLexicalGrammar(endToken)
+  }
+
+  /**
+   * Tokenizes a substring.
+   *
+   * @memberof Tokenizer
+   */
+  _tokenizeSubString () {
+    this._trimString()
+    const subString = this._getSubStringFrom(this.string)
+    this._cutSubStringFromString(subString)
+    const munches = this._matchGrammarTypesTo(subString)
+    const token = this._getMaximumMunch(munches)
+    this._addToLexicalGrammar(token)
+  }
+
+  /**
+   * Trim a string.
+   *
+   * @memberof Tokenizer
+   */
+  _trimString () {
+    this.string = this.string.trimStart()
   }
 
   /**
@@ -110,7 +129,7 @@ export default class Tokenizer {
    */
   getPreviousToken () {
     try {
-      if ((this.activeTokenIndex - 1) < 0) {
+      if (this.isFirstToken()) {
         throw new Error('First index reached')
       }
       this.activeTokenIndex -= 1 // kapsla i en funktion som bara returnerar this.activeIndex-1, skicka det till nästa
@@ -119,6 +138,16 @@ export default class Tokenizer {
       console.error(`Error: ${error.message}`)
       process.exitCode = 1
     }
+  }
+
+  /**
+   * Validates if current token is first token.
+   *
+   * @returns {boolean} boolean.
+   * @memberof Tokenizer
+   */
+  isFirstToken () {
+    return this.activeTokenIndex === 0
   }
 
   /**
@@ -139,7 +168,7 @@ export default class Tokenizer {
         }
         this._addToLexicalGrammar(endToken)
       } else {
-        this.tokenizeSubString()
+        this._tokenizeString()
       }
       this.activeTokenIndex += 1
       this._setActiveTokenTo(this.activeTokenIndex)
