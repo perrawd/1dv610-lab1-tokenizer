@@ -25,6 +25,85 @@ export default class Tokenizer {
   }
 
   /**
+   * Tokenizes a substring.
+   *
+   * @memberof Tokenizer
+   */
+  tokenizeSubString () {
+    try {
+      this.string = this._trimString()
+      if (this._isEmpty(this.string)) {
+        const endToken = this._createNewTokenWith(this.lexicalGrammar.length, 'END', 'END')
+        this._addToLexicalGrammar(endToken)
+      } else {
+        const subString = this._getSubStringFrom(this.string)
+        this._cutSubStringFromString(subString)
+        const munches = this._matchGrammarTypesTo(subString)
+        const token = this._getMaximumMunch(munches)
+        this._addToLexicalGrammar(token)
+      }
+    } catch (error) {
+      console.error(`Error: ${error.message}`)
+      process.exitCode = 1
+    }
+  }
+
+  /**
+   * Trim a string.
+   *
+   * @returns {string} Trimmed string.
+   * @memberof Tokenizer
+   */
+  _trimString () {
+    return this.string.trimStart()
+  }
+
+  /**
+   * Validates if remaining string is empty.
+   *
+   * @param {*} str the string.
+   * @returns {boolean} returns if true.
+   * @memberof Tokenizer
+   */
+  _isEmpty (str) {
+    return !str.length
+  }
+
+  /**
+   * Creates new token.
+   *
+   * @param {number} index The index.
+   * @param {string} tokenType The Token Type.
+   * @param {string} value The value.
+   * @returns {object} The tokenized substring.
+   * @memberof Tokenizer
+   */
+  _createNewTokenWith (index, tokenType, value) {
+    return new TokenizedSubString(index, tokenType, value).token
+  }
+
+  /**
+   * Slices a substring from a string.
+   *
+   * @param {string} string the string to slice.
+   * @returns {string} the sliced substring.
+   * @memberof Tokenizer
+   */
+  _getSubStringFrom (string) {
+    return string.slice(0, this.string.search(this.splitPattern) + 1)
+  }
+
+  /**
+   * Cuts from the substring from string.
+   *
+   * @param {string} subString the substring.
+   * @memberof Tokenizer
+   */
+  _cutSubStringFromString (subString) {
+    this.string = this.string.replace(subString, '')
+  }
+
+  /**
    * Move active token to previous.
    *
    * @memberof Tokenizer
@@ -34,10 +113,10 @@ export default class Tokenizer {
       if ((this.activeTokenIndex - 1) < 0) {
         throw new Error('First index reached')
       }
-      this.activeTokenIndex -= 1
-      this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
-    } catch (error) {
-      console.error(error.message)
+      this.activeTokenIndex -= 1 // kapsla i en funktion som bara returnerar this.activeIndex-1, skicka det till nästa
+      this._setActiveTokenTo(this.activeTokenIndex) // Kapsla i en funktion, kan återanvändas i både next och prev
+    } catch (error) { // kapsla in hela error hanteringen i en egen funktion, använd för alla
+      console.error(`Error: ${error.message}`)
       process.exitCode = 1
     }
   }
@@ -62,40 +141,22 @@ export default class Tokenizer {
       } else {
         this.tokenizeSubString()
       }
-      this.activeTokenIndex++
-      this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
+      this.activeTokenIndex += 1
+      this._setActiveTokenTo(this.activeTokenIndex)
     } catch (error) {
-      console.error(error.message)
+      console.error(`Error: ${error.message}`)
       process.exitCode = 1
     }
   }
 
   /**
-   * Tokenizes a substring.
+   * Sets the active token to index passed in.
    *
+   * @param {number} index The index to set the active token to.
    * @memberof Tokenizer
    */
-  tokenizeSubString () {
-    try {
-      this.string = this.string.trimStart()
-      if (!this.string.length) {
-        const endToken = {
-          index: this.lexicalGrammar.length,
-          tokenType: 'END',
-          value: 'END'
-        }
-        this._addToLexicalGrammar(endToken)
-      } else {
-        const subString = this.string.slice(0, this.string.search(this.splitPattern) + 1)
-        this.string = this.string.replace(subString, '')
-        const munches = this._matchGrammarTypesTo(subString)
-        const token = this._getMaximumMunch(munches)
-        this._addToLexicalGrammar(token)
-      }
-    } catch (error) {
-      console.error(error.message)
-      process.exitCode = 1
-    }
+  _setActiveTokenTo (index) {
+    this.activeToken = this.lexicalGrammar[index]
   }
 
   /**
@@ -116,7 +177,7 @@ export default class Tokenizer {
             key,
             subString.match(value)[0]
           )
-          munches.push(token)
+          munches.push(token) // addToMunchesArray
         }
       }
       if (!munches.length) {
@@ -124,7 +185,7 @@ export default class Tokenizer {
       }
       return munches
     } catch (error) {
-      console.error(error.message)
+      console.error(`Error: ${error.message}`)
       process.exitCode = 1
     }
   }
@@ -138,7 +199,7 @@ export default class Tokenizer {
    */
   _getMaximumMunch (munches) {
     // console.log(munches)
-    const result = munches.sort((a, b) => b.value.length - a.value.length)
+    const result = munches.sort((a, b) => b.value.length - a.value.length) // sortMunchesByLength()
     return result[0]
   }
 
