@@ -35,8 +35,7 @@ export default class Tokenizer {
         ? this._addEndToken()
         : this._tokenizeSubString()
     } catch (error) {
-      console.error(`Error: ${error.message}`)
-      process.exitCode = 1
+      this._processError(error)
     }
   }
 
@@ -66,6 +65,19 @@ export default class Tokenizer {
   }
 
   /**
+   * Creates new token.
+   *
+   * @param {number} index The index.
+   * @param {string} tokenType The Token Type.
+   * @param {string} value The value.
+   * @returns {object} The tokenized substring.
+   * @memberof Tokenizer
+   */
+  _createNewTokenWith (index, tokenType, value) {
+    return new TokenizedSubString(index, tokenType, value).token
+  }
+
+  /**
    * Tokenizes a substring.
    *
    * @memberof Tokenizer
@@ -73,7 +85,7 @@ export default class Tokenizer {
   _tokenizeSubString () {
     this._trimString()
     const subString = this._getSubStringFrom(this.string)
-    this._cutSubStringFromString(subString)
+    this._cutFromString(subString)
     const munches = this._matchGrammarTypesTo(subString)
     const token = this._getMaximumMunch(munches)
     this._addToLexicalGrammar(token)
@@ -86,19 +98,6 @@ export default class Tokenizer {
    */
   _trimString () {
     this.string = this.string.trimStart()
-  }
-
-  /**
-   * Creates new token.
-   *
-   * @param {number} index The index.
-   * @param {string} tokenType The Token Type.
-   * @param {string} value The value.
-   * @returns {object} The tokenized substring.
-   * @memberof Tokenizer
-   */
-  _createNewTokenWith (index, tokenType, value) {
-    return new TokenizedSubString(index, tokenType, value).token
   }
 
   /**
@@ -118,7 +117,7 @@ export default class Tokenizer {
    * @param {string} subString the substring.
    * @memberof Tokenizer
    */
-  _cutSubStringFromString (subString) {
+  _cutFromString (subString) {
     this.string = this.string.replace(subString, '')
   }
 
@@ -129,15 +128,21 @@ export default class Tokenizer {
    */
   getPreviousToken () {
     try {
-      if (this.isFirstToken()) {
-        throw new Error('First index reached')
-      }
-      this.activeTokenIndex -= 1 // kapsla i en funktion som bara returnerar this.activeIndex-1, skicka det till nästa
-      this._setActiveTokenTo(this.activeTokenIndex) // Kapsla i en funktion, kan återanvändas i både next och prev
-    } catch (error) { // kapsla in hela error hanteringen i en egen funktion, använd för alla
-      console.error(`Error: ${error.message}`)
-      process.exitCode = 1
+      if (this.isFirstToken()) { throw new Error('First index reached') }
+      this._setPreviousTokenIndex() // kapsla i en funktion som bara returnerar this.activeIndex-1, skicka det till nästa
+      this._setActiveToken()
+    } catch (error) {
+      this._processError(error)
     }
+  }
+
+  /**
+   * Set the activeTokenIndex to previous.
+   *
+   * @memberof Tokenizer
+   */
+  _setPreviousTokenIndex () {
+    this.activeTokenIndex -= 1
   }
 
   /**
@@ -157,35 +162,41 @@ export default class Tokenizer {
    */
   getNextToken () {
     try {
-      if (this.lexicalGrammar[this.lexicalGrammar.length - 1].tokenType === 'END') {
-        throw new Error('Last TOKEN')
-      }
-      if (!this.string.length) {
-        const endToken = {
-          index: this.lexicalGrammar.length,
-          tokenType: 'END',
-          value: 'END'
-        }
-        this._addToLexicalGrammar(endToken)
-      } else {
-        this._tokenizeString()
-      }
-      this.activeTokenIndex += 1
-      this._setActiveTokenTo(this.activeTokenIndex)
+      if (this._isEndToken()) { throw new Error('Last TOKEN reached') }
+      this._tokenizeString()
+      this._setNextTokenIndex()
+      this._setActiveToken()
     } catch (error) {
-      console.error(`Error: ${error.message}`)
-      process.exitCode = 1
+      this._processError(error)
     }
+  }
+
+  /**
+   * Validates if current token is END.
+   *
+   * @returns {boolean} boolean.
+   * @memberof Tokenizer
+   */
+  _isEndToken () {
+    return this.lexicalGrammar[this.lexicalGrammar.length - 1].tokenType === 'END'
+  }
+
+  /**
+   * Set the activeTokenIndex to next.
+   *
+   * @memberof Tokenizer
+   */
+  _setNextTokenIndex () {
+    this.activeTokenIndex += 1
   }
 
   /**
    * Sets the active token to index passed in.
    *
-   * @param {number} index The index to set the active token to.
    * @memberof Tokenizer
    */
-  _setActiveTokenTo (index) {
-    this.activeToken = this.lexicalGrammar[index]
+  _setActiveToken () {
+    this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
   }
 
   /**
@@ -197,26 +208,41 @@ export default class Tokenizer {
    */
   _matchGrammarTypesTo (subString) {
     try {
-      const munches = []
-      for (const [key, value] of Object.entries(this.grammarTypes)) {
-        const index = 1
-        if (new RegExp(value).test(subString)) {
-          const { token } = new TokenizedSubString(
-            index,
-            key,
-            subString.match(value)[0]
-          )
-          munches.push(token) // addToMunchesArray
-        }
-      }
-      if (!munches.length) {
-        throw new Error('No matches found for this subtoken!')
-      }
+      const munches = this._findMunchesForSubString(subString)
+      if (!munches.length) { throw new Error('No matches found for this subtoken!') }
       return munches
     } catch (error) {
-      console.error(`Error: ${error.message}`)
-      process.exitCode = 1
+      this._processError(error)
     }
+  }
+
+  /**
+   * Returns an array of found munches.
+   *
+   * @param {string} subString The SubString.
+   * @returns {Array} Array of munches.
+   * @memberof Tokenizer
+   */
+  _findMunchesForSubString (subString) {
+    const munches = []
+    for (const [tokenType, pattern] of Object.entries(this.grammarTypes)) {
+      if (this._patternsMatches(pattern, subString)) {
+        munches.push(this._createNewTokenWith(0, tokenType, subString.match(pattern)[0]))
+      }
+    }
+    return munches
+  }
+
+  /**
+   * Matches pattern to substring and returns boolean value.
+   *
+   * @param {string} pattern THe Regexp pattern.
+   * @param {string} subString The SubString.
+   * @returns {boolean} boolean.
+   * @memberof Tokenizer
+   */
+  _patternsMatches (pattern, subString) {
+    return new RegExp(pattern).test(subString)
   }
 
   /**
@@ -227,9 +253,7 @@ export default class Tokenizer {
    * @returns {object} Array.
    */
   _getMaximumMunch (munches) {
-    // console.log(munches)
-    const result = munches.sort((a, b) => b.value.length - a.value.length) // sortMunchesByLength()
-    return result[0]
+    return munches.sort((a, b) => b.value.length - a.value.length)[0]
   }
 
   /**
@@ -239,11 +263,22 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   _addToLexicalGrammar (subString) {
-    const { token } = new TokenizedSubString(
+    const token = this._createNewTokenWith(
       this.lexicalGrammar.length,
       subString.tokenType,
       subString.value
     )
     this.lexicalGrammar.push(token)
+  }
+
+  /**
+   * Process error handling.
+   *
+   * @param {*} error The Error object.
+   * @memberof Tokenizer
+   */
+  _processError (error) {
+    console.error(`Error: ${error.message}`)
+    process.exitCode = 1
   }
 }

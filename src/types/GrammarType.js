@@ -13,6 +13,11 @@ export default class GrammaticType {
    * @memberof GrammaticType
    */
   constructor (jsonFile) {
-    Object.assign(this, JSON.parse(fs.readFileSync(new URL(`./${jsonFile}.json`, import.meta.url), 'utf8')))
+    Object.assign(this,
+      JSON.parse(fs.readFileSync(new URL(`./${jsonFile}.json`,
+        import.meta.url),
+      'utf8')
+      )
+    )
   }
 }
