@@ -15,13 +15,13 @@ export default class Tokenizer {
   constructor (type, string) {
     // Assigns key value pairs of the Grammar type to the object.
     Object.assign(this, type)
-    this.string = string
+    this._string = string
 
-    this.lexicalGrammar = []
+    this._lexicalGrammar = []
     this._processNextSubString()
 
-    this.activeTokenIndex = 0
-    this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
+    this._activeTokenIndex = 0
+    this._activeToken = this._lexicalGrammar[this._activeTokenIndex]
   }
 
   /**
@@ -31,7 +31,7 @@ export default class Tokenizer {
    */
   _processNextSubString () {
     try {
-      this._isEmpty(this.string)
+      this._isEmpty(this._string)
         ? this._createAndAppendEndTokenToLexicalGrammar()
         : this._tokenizeSubStringAndAppendToLexicalGrammar()
     } catch (error) {
@@ -57,7 +57,7 @@ export default class Tokenizer {
    */
   _createAndAppendEndTokenToLexicalGrammar () {
     const endToken = this._createNewTokenWith(
-      this.lexicalGrammar.length,
+      this._lexicalGrammar.length,
       'END',
       'END'
     )
@@ -84,12 +84,12 @@ export default class Tokenizer {
    */
   _tokenizeSubStringAndAppendToLexicalGrammar () {
     this._trimString()
-    const subString = this._getSubStringFrom(this.string)
+    const subString = this._getSubStringFrom(this._string)
     this._cutFromString(subString)
     const matches = this._getGrammarMatchesFor(subString)
     const maximumMunch = this._getMaximumMunchFrom(matches)
     const token = this._createNewTokenWith(
-      this.lexicalGrammar.length,
+      this._lexicalGrammar.length,
       maximumMunch.tokenType,
       maximumMunch.value
     )
@@ -102,7 +102,7 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   _trimString () {
-    this.string = this.string.trimStart()
+    this._string = this._string.trimStart()
   }
 
   /**
@@ -113,7 +113,7 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   _getSubStringFrom (string) {
-    return string.slice(0, this.string.search(this.splitPattern) + 1)
+    return string.slice(0, this._string.search(this.splitPattern) + 1)
   }
 
   /**
@@ -123,7 +123,7 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   _cutFromString (subString) {
-    this.string = this.string.replace(subString, '')
+    this._string = this._string.replace(subString, '')
   }
 
   /**
@@ -190,7 +190,7 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   _appendToLexicalGrammar (token) {
-    this.lexicalGrammar.push(token)
+    this._lexicalGrammar.push(token)
   }
 
   /**
@@ -198,7 +198,7 @@ export default class Tokenizer {
    *
    * @memberof Tokenizer
    */
-  getPreviousToken () {
+  setPreviousToken () {
     try {
       if (this._isFirstToken()) { throw new Error('First index reached') }
       this._updateActiveTokenIndexToPrevious()
@@ -214,7 +214,7 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   _updateActiveTokenIndexToPrevious () {
-    this.activeTokenIndex -= 1
+    this._activeTokenIndex -= 1
   }
 
   /**
@@ -224,7 +224,7 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   _isFirstToken () {
-    return this.activeTokenIndex === 0
+    return this._activeTokenIndex === 0
   }
 
   /**
@@ -232,7 +232,7 @@ export default class Tokenizer {
    *
    * @memberof Tokenizer
    */
-  getNextToken () {
+  setNextToken () {
     try {
       if (this._isEndToken()) { throw new Error('Last TOKEN reached') }
       this._processNextSubString()
@@ -250,7 +250,7 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   _isEndToken () {
-    return this.lexicalGrammar[this.lexicalGrammar.length - 1].tokenType === 'END'
+    return this._lexicalGrammar[this._lexicalGrammar.length - 1].tokenType === 'END'
   }
 
   /**
@@ -259,7 +259,7 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   _updateActiveTokenIndexToNext () {
-    this.activeTokenIndex += 1
+    this._activeTokenIndex += 1
   }
 
   /**
@@ -268,7 +268,7 @@ export default class Tokenizer {
    * @memberof Tokenizer
    */
   _updateActiveToken () {
-    this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
+    this._activeToken = this._lexicalGrammar[this._activeTokenIndex]
   }
 
   /**
@@ -280,5 +280,15 @@ export default class Tokenizer {
   _processError (error) {
     console.error(`Error: ${error.message}`)
     process.exitCode = 1
+  }
+
+  /**
+   * Returns the active token.
+   *
+   * @returns {object} The active token.
+   * @memberof Tokenizer
+   */
+  getActiveToken () {
+    return this._activeToken
   }
 }
