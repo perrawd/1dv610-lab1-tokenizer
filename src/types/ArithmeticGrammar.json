@@ -1,5 +1,6 @@
 {
   "grammarName": "ArithmeticGrammar",
+  "description": "Grammar type for Arithmetic.",
   "splitPattern": "[-+*/]|\\S(?![0-9]*[.]*[0-9])",
   "grammarTypes": {
     "NUMBER": "^[0-9]+(\\.([0-9])+)?",

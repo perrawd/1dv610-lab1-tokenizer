@@ -1,5 +1,6 @@
 {
   "grammarName": "WordAndDotGrammar",
+  "description": "Grammar type for word and dot.",
   "splitPattern": "\\S(?![\\w|åäöÅÄÖ+])|\\.",
   "grammarTypes": {
     "WORD": "^[\\w|åäöÅÄÖ]+",

@@ -18,7 +18,7 @@ export default class Tokenizer {
     this.string = string
 
     this.lexicalGrammar = []
-    this._tokenizeString()
+    this._processNextSubString()
 
     this.activeTokenIndex = 0
     this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
@@ -29,11 +29,11 @@ export default class Tokenizer {
    *
    * @memberof Tokenizer
    */
-  _tokenizeString () {
+  _processNextSubString () {
     try {
       this._isEmpty(this.string)
-        ? this._addEndToken()
-        : this._tokenizeSubString()
+        ? this._createAndAppendEndTokenToLexicalGrammar()
+        : this._tokenizeSubStringAndAppendToLexicalGrammar()
     } catch (error) {
       this._processError(error)
     }
@@ -42,12 +42,12 @@ export default class Tokenizer {
   /**
    * Validates if remaining string is empty.
    *
-   * @param {*} str the string.
+   * @param {*} string the string.
    * @returns {boolean} returns if true.
    * @memberof Tokenizer
    */
-  _isEmpty (str) {
-    return !str.trim().length
+  _isEmpty (string) {
+    return !string.trim().length
   }
 
   /**
@@ -55,13 +55,13 @@ export default class Tokenizer {
    *
    * @memberof Tokenizer
    */
-  _addEndToken () {
+  _createAndAppendEndTokenToLexicalGrammar () {
     const endToken = this._createNewTokenWith(
       this.lexicalGrammar.length,
       'END',
       'END'
     )
-    this._addToLexicalGrammar(endToken)
+    this._appendToLexicalGrammar(endToken)
   }
 
   /**
@@ -82,13 +82,18 @@ export default class Tokenizer {
    *
    * @memberof Tokenizer
    */
-  _tokenizeSubString () {
+  _tokenizeSubStringAndAppendToLexicalGrammar () {
     this._trimString()
     const subString = this._getSubStringFrom(this.string)
     this._cutFromString(subString)
-    const munches = this._matchGrammarTypesTo(subString)
-    const token = this._getMaximumMunch(munches)
-    this._addToLexicalGrammar(token)
+    const matches = this._getGrammarMatchesFor(subString)
+    const maximumMunch = this._getMaximumMunchFrom(matches)
+    const token = this._createNewTokenWith(
+      this.lexicalGrammar.length,
+      maximumMunch.tokenType,
+      maximumMunch.value
+    )
+    this._appendToLexicalGrammar(token)
   }
 
   /**
@@ -122,15 +127,82 @@ export default class Tokenizer {
   }
 
   /**
+   * Matches grammar types a substring.
+   *
+   * @param {string} subString string.
+   * @memberof Tokenizer
+   * @returns {Array} Array.
+   */
+  _getGrammarMatchesFor (subString) {
+    try {
+      const matches = this._matchTokenTypesTo(subString)
+      if (!matches.length) { throw new Error('No matches found for this subtoken!') }
+      return matches
+    } catch (error) {
+      this._processError(error)
+    }
+  }
+
+  /**
+   * Returns an array of found munches.
+   *
+   * @param {string} subString The SubString.
+   * @returns {Array} Array of munches.
+   * @memberof Tokenizer
+   */
+  _matchTokenTypesTo (subString) {
+    const matches = []
+    for (const [tokenType, pattern] of Object.entries(this.grammarTypes)) {
+      if (this._patternMatch(pattern, subString)) {
+        matches.push(this._createNewTokenWith(0, tokenType, subString.match(pattern)[0]))
+      }
+    }
+    return matches
+  }
+
+  /**
+   * Matches pattern to substring and returns boolean value.
+   *
+   * @param {string} pattern THe Regexp pattern.
+   * @param {string} subString The SubString.
+   * @returns {boolean} boolean.
+   * @memberof Tokenizer
+   */
+  _patternMatch (pattern, subString) {
+    return new RegExp(pattern).test(subString)
+  }
+
+  /**
+   * Gets maximum munch from an array of munches.
+   *
+   * @param {Array} munches munches.
+   * @memberof Tokenizer
+   * @returns {object} Array.
+   */
+  _getMaximumMunchFrom (munches) {
+    return munches.sort((a, b) => b.value.length - a.value.length)[0]
+  }
+
+  /**
+   * Adds token to the lexical grammar array.
+   *
+   * @param {object} token token.
+   * @memberof Tokenizer
+   */
+  _appendToLexicalGrammar (token) {
+    this.lexicalGrammar.push(token)
+  }
+
+  /**
    * Move active token to previous.
    *
    * @memberof Tokenizer
    */
   getPreviousToken () {
     try {
-      if (this.isFirstToken()) { throw new Error('First index reached') }
-      this._setPreviousTokenIndex() // kapsla i en funktion som bara returnerar this.activeIndex-1, skicka det till nästa
-      this._setActiveToken()
+      if (this._isFirstToken()) { throw new Error('First index reached') }
+      this._updateActiveTokenIndexToPrevious()
+      this._updateActiveToken()
     } catch (error) {
       this._processError(error)
     }
@@ -141,7 +213,7 @@ export default class Tokenizer {
    *
    * @memberof Tokenizer
    */
-  _setPreviousTokenIndex () {
+  _updateActiveTokenIndexToPrevious () {
     this.activeTokenIndex -= 1
   }
 
@@ -151,7 +223,7 @@ export default class Tokenizer {
    * @returns {boolean} boolean.
    * @memberof Tokenizer
    */
-  isFirstToken () {
+  _isFirstToken () {
     return this.activeTokenIndex === 0
   }
 
@@ -163,9 +235,9 @@ export default class Tokenizer {
   getNextToken () {
     try {
       if (this._isEndToken()) { throw new Error('Last TOKEN reached') }
-      this._tokenizeString()
-      this._setNextTokenIndex()
-      this._setActiveToken()
+      this._processNextSubString()
+      this._updateActiveTokenIndexToNext()
+      this._updateActiveToken()
     } catch (error) {
       this._processError(error)
     }
@@ -186,7 +258,7 @@ export default class Tokenizer {
    *
    * @memberof Tokenizer
    */
-  _setNextTokenIndex () {
+  _updateActiveTokenIndexToNext () {
     this.activeTokenIndex += 1
   }
 
@@ -195,80 +267,8 @@ export default class Tokenizer {
    *
    * @memberof Tokenizer
    */
-  _setActiveToken () {
+  _updateActiveToken () {
     this.activeToken = this.lexicalGrammar[this.activeTokenIndex]
-  }
-
-  /**
-   * Matches grammar types a substring.
-   *
-   * @param {string} subString string.
-   * @memberof Tokenizer
-   * @returns {Array} Array.
-   */
-  _matchGrammarTypesTo (subString) {
-    try {
-      const munches = this._findMunchesForSubString(subString)
-      if (!munches.length) { throw new Error('No matches found for this subtoken!') }
-      return munches
-    } catch (error) {
-      this._processError(error)
-    }
-  }
-
-  /**
-   * Returns an array of found munches.
-   *
-   * @param {string} subString The SubString.
-   * @returns {Array} Array of munches.
-   * @memberof Tokenizer
-   */
-  _findMunchesForSubString (subString) {
-    const munches = []
-    for (const [tokenType, pattern] of Object.entries(this.grammarTypes)) {
-      if (this._patternsMatches(pattern, subString)) {
-        munches.push(this._createNewTokenWith(0, tokenType, subString.match(pattern)[0]))
-      }
-    }
-    return munches
-  }
-
-  /**
-   * Matches pattern to substring and returns boolean value.
-   *
-   * @param {string} pattern THe Regexp pattern.
-   * @param {string} subString The SubString.
-   * @returns {boolean} boolean.
-   * @memberof Tokenizer
-   */
-  _patternsMatches (pattern, subString) {
-    return new RegExp(pattern).test(subString)
-  }
-
-  /**
-   * Gets maximum munch from an array of munches.
-   *
-   * @param {Array} munches munches.
-   * @memberof Tokenizer
-   * @returns {object} Array.
-   */
-  _getMaximumMunch (munches) {
-    return munches.sort((a, b) => b.value.length - a.value.length)[0]
-  }
-
-  /**
-   * Adds token to the lexical grammar array.
-   *
-   * @param {object} subString token.
-   * @memberof Tokenizer
-   */
-  _addToLexicalGrammar (subString) {
-    const token = this._createNewTokenWith(
-      this.lexicalGrammar.length,
-      subString.tokenType,
-      subString.value
-    )
-    this.lexicalGrammar.push(token)
   }
 
   /**
