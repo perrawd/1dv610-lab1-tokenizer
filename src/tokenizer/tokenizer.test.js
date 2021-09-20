@@ -20,10 +20,10 @@ const sequenceOperator = (grammar, sequence) => {
     for (const seq of arr) {
       switch (seq) {
         case '>':
-          grammar.setNextToken()
+          grammar.setActiveTokenToNext()
           break
         case '<':
-          grammar.setPreviousToken()
+          grammar.setActiveTokenToPrevious()
           break
         default:
           throw new Error('Invalid sequence')
@@ -49,7 +49,7 @@ describe('wordDotGrammar Test Suite', () => {
 
   test('TC.2', () => {
     const TC2 = new Tokenizer(wordAndDotGrammar, 'a aa')
-    TC2.setNextToken()
+    TC2.setActiveTokenToNext()
     expect(TC2.getActiveToken()).toMatchObject({
       tokenMatch: 1,
       tokenType: 'WORD',
@@ -59,7 +59,7 @@ describe('wordDotGrammar Test Suite', () => {
 
   test('TC.3', () => {
     const TC3 = new Tokenizer(wordAndDotGrammar, 'a.b')
-    TC3.setNextToken()
+    TC3.setActiveTokenToNext()
     expect(TC3.getActiveToken()).toMatchObject({
       tokenMatch: 1,
       tokenType: 'DOT',
@@ -129,7 +129,7 @@ describe('wordDotGrammar Test Suite', () => {
     const spy = jest.spyOn(console, 'error').mockReturnValue()
     const TC10 = new Tokenizer(wordAndDotGrammar, 'a')
     expect(() => {
-      TC10.setPreviousToken().toThrow('First index reached')
+      TC10.setActiveTokenToPrevious().toThrow('First index reached')
     })
     spy.mockRestore()
   })
