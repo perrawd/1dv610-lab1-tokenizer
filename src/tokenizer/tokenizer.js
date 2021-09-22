@@ -12,7 +12,10 @@ export default class Tokenizer {
    */
   constructor (type, string) {
     // Assigns key value pairs of the Grammar type to the object.
-    Object.assign(this, type)
+    this._trim = type.trim
+    this._seperator = type.seperator
+    this._grammarTypes = type.grammarTypes
+    // Object.assign(this, type)
     this._string = string
 
     this._lexicalGrammar = []
@@ -86,7 +89,7 @@ export default class Tokenizer {
    * @returns {object} The token.
    */
   _tokenizeNextSubString () {
-    this._trimString()
+    if (this._trim) this._trimString()
     const subString = this._getSubStringFrom(this._string)
     this._cutFromString(subString)
     const matches = this._getGrammarMatchesFor(subString)
@@ -114,7 +117,7 @@ export default class Tokenizer {
    * @returns {string} the sliced substring.
    */
   _getSubStringFrom (string) {
-    return string.slice(0, this._string.search(this.splitPattern) + 1)
+    return string.slice(0, this._string.search(this._seperator) + 1)
   }
 
   /**
@@ -150,7 +153,7 @@ export default class Tokenizer {
    */
   _matchTokenTypesTo (subString) {
     const matches = []
-    for (const [tokenType, pattern] of Object.entries(this.grammarTypes)) {
+    for (const [tokenType, pattern] of Object.entries(this._grammarTypes)) {
       if (this._patternMatch(pattern, subString)) {
         matches.push(this._createNewTokenWith(0, tokenType, subString.match(pattern)[0]))
       }
