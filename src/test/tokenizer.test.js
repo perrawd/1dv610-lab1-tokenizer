@@ -1,7 +1,7 @@
 import { jest, expect } from '@jest/globals'
-import GrammaticType from '../types/GrammarType.js'
-import GRAMMAR from './grammar.js'
-import Tokenizer from './tokenizer'
+import GrammaticType from '../lib/types/GrammarType.js'
+import GRAMMAR from '../lib/types/grammar.js'
+import Tokenizer from '../bin/tokenizer/tokenizer'
 
 const { WORD_AND_DOT, ARITHMETIC } = GRAMMAR
 
@@ -40,7 +40,7 @@ describe('wordDotGrammar Test Suite', () => {
  */
   test('TC.1', () => {
     const TC1 = new Tokenizer(wordAndDotGrammar, 'a')
-    expect(TC1.getActiveToken()).toMatchObject({
+    expect(TC1.getActiveToken()).toStrictEqual({
       tokenMatch: 0,
       tokenType: 'WORD',
       value: 'a'
