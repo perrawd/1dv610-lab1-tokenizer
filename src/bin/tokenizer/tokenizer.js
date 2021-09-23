@@ -11,26 +11,24 @@ export default class Tokenizer {
    * @param {string} string The string to be tokenized.
    */
   constructor (type, string) {
-    // Assigns key value pairs of the Grammar type to the object.
     this._trim = type.trim
     this._seperator = type.seperator
     this._grammarTypes = type.grammarTypes
-    // Object.assign(this, type)
-    // this._referenceString = string
+
     this._string = string
 
     this._lexicalGrammar = []
-    this._processNextSubString()
+    this._processNextToken()
 
     this._activeTokenIndex = 0
     this._activeToken = this._lexicalGrammar[this._activeTokenIndex]
   }
 
   /**
-   * Tokenizes a substring.
+   * Process next token to be appended to the Lexical Grammar.
    *
    */
-  _processNextSubString () { // processNextToken
+  _processNextToken () {
     try {
       this._isEmpty(this._string)
         ? this._appendEndTokenToLexicalGrammar()
@@ -41,10 +39,10 @@ export default class Tokenizer {
   }
 
   /**
-   * Validates if remaining string is empty.
+   * Validate if remaining string is empty.
    *
-   * @param {*} string the string.
-   * @returns {boolean} returns if true.
+   * @param {string} string The string.
+   * @returns {boolean} Returns true if the string is empty.
    */
   _isEmpty (string) {
     return !string.trim().length
@@ -64,22 +62,31 @@ export default class Tokenizer {
   }
 
   /**
-   * Creates new token.
+   * Creates a new token.
    *
-   * @param {number} index The index.
-   * @param {string} tokenType The Token Type.
-   * @param {string} value The value.
-   * @returns {object} The tokenized substring.
+   * @param {number} index Index of the token in the Lexical Grammar.
+   * @param {string} tokenType The token type.
+   * @param {string} value Value of the token.
+   * @returns {object} The token.
    */
   _createNewTokenWith (index, tokenType, value) {
     return new Token(index, tokenType, value)
   }
 
   /**
-   * Append the next substring as a token to the Lexical Grammar.
+   * Append a token to the Lexical Grammar.
+   *
+   * @param {object} token The token.
+   */
+  _appendToLexicalGrammar (token) {
+    this._lexicalGrammar.push(token)
+  }
+
+  /**
+   * Append the next token to the Lexical Grammar.
    *
    */
-  _appendNextTokenToLexicalGrammar () { // appendNextTokenToLexicalGrammar
+  _appendNextTokenToLexicalGrammar () {
     const token = this._tokenizeNextSubString()
     this._appendToLexicalGrammar(token)
   }
@@ -91,7 +98,7 @@ export default class Tokenizer {
    */
   _tokenizeNextSubString () {
     if (this._trim) this._trimString()
-    const subString = this._getSubStringFrom(this._string)
+    const subString = this._getNextSubStringFrom(this._string)
     this._cutFromString(subString)
     const matches = this._getGrammarMatchesFor(subString)
     const maximumMunch = this._getMaximumMunchFrom(matches)
@@ -104,34 +111,34 @@ export default class Tokenizer {
   }
 
   /**
-   * Trim a string.
+   * Trims the string.
    *
    */
   _trimString () {
-    this._string = this._string.trimStart()
+    this._string = this._string.trim()
   }
 
   /**
-   * Slices a substring from a string.
+   * Slices the first substring from the string.
    *
-   * @param {string} string the string to slice.
-   * @returns {string} the sliced substring.
+   * @param {string} string The string to slice.
+   * @returns {string} The substring sliced from string.
    */
-  _getSubStringFrom (string) {
+  _getNextSubStringFrom (string) {
     return string.slice(0, this._string.search(this._seperator) + 1)
   }
 
   /**
-   * Cuts from the substring from string.
+   * Cut the first matching substring from the string.
    *
-   * @param {string} subString the substring.
+   * @param {string} subString The substring.
    */
   _cutFromString (subString) {
     this._string = this._string.replace(subString, '')
   }
 
   /**
-   * Matches grammar types a substring.
+   * Matches grammar types to a substring.
    *
    * @param {string} subString string.
    * @returns {Array} Array.
@@ -147,10 +154,10 @@ export default class Tokenizer {
   }
 
   /**
-   * Returns an array of found munches.
+   * Returns an array of grammar matches for a substring.
    *
-   * @param {string} subString The SubString.
-   * @returns {Array} Array of munches.
+   * @param {string} subString The substring.
+   * @returns {Array} Array of matches.
    */
   _matchTokenTypesTo (subString) {
     const matches = []
@@ -165,35 +172,26 @@ export default class Tokenizer {
   /**
    * Matches pattern to substring and returns boolean value.
    *
-   * @param {string} pattern THe Regexp pattern.
-   * @param {string} subString The SubString.
-   * @returns {boolean} boolean.
+   * @param {string} pattern A Regexp pattern.
+   * @param {string} subString The substring.
+   * @returns {boolean} If a match is true.
    */
   _patternMatch (pattern, subString) {
     return new RegExp(pattern).test(subString)
   }
 
   /**
-   * Gets maximum munch from an array of munches.
+   * Get the maximum munch from an array of matches.
    *
-   * @param {Array} matches munches.
-   * @returns {object} Array.
+   * @param {Array} matches Array of matches.
+   * @returns {object} The Maximum Munch.
    */
   _getMaximumMunchFrom (matches) {
     return matches.sort((a, b) => b.value.length - a.value.length)[0]
   }
 
   /**
-   * Adds token to the lexical grammar array.
-   *
-   * @param {object} token token.
-   */
-  _appendToLexicalGrammar (token) {
-    this._lexicalGrammar.push(token)
-  }
-
-  /**
-   * Move active token to previous.
+   * Set active token to previous.
    *
    */
   setActiveTokenToPrevious () {
@@ -207,20 +205,20 @@ export default class Tokenizer {
   }
 
   /**
+   * Validate if current token is first token.
+   *
+   * @returns {boolean} Returns true if current token is the first.
+   */
+  _isFirstToken () {
+    return this._activeTokenIndex === 0
+  }
+
+  /**
    * Set the activeTokenIndex to previous.
    *
    */
   _updateActiveTokenIndexToPrevious () {
     this._activeTokenIndex -= 1
-  }
-
-  /**
-   * Validates if current token is first token.
-   *
-   * @returns {boolean} boolean.
-   */
-  _isFirstToken () {
-    return this._activeTokenIndex === 0
   }
 
   /**
@@ -230,7 +228,7 @@ export default class Tokenizer {
   setActiveTokenToNext () {
     try {
       if (this._isEndToken()) { throw new Error('Last TOKEN reached') }
-      this._processNextSubString()
+      this._processNextToken()
       this._updateActiveTokenIndexToNext()
       this._updateActiveToken()
     } catch (error) {
@@ -256,7 +254,7 @@ export default class Tokenizer {
   }
 
   /**
-   * Sets the active token to index passed in.
+   * Update the active token to the current active token index.
    *
    */
   _updateActiveToken () {
@@ -266,7 +264,7 @@ export default class Tokenizer {
   /**
    * Process error handling.
    *
-   * @param {*} error The Error object.
+   * @param {object} error The Error object.
    */
   _processError (error) {
     console.error(`Error: ${error.message}`)

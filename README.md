@@ -1,6 +1,9 @@
 # Tokenizer
-A module that performs lexical analysis for a string.  
+A module that performs a lexical analysis for a given string and grammar.  
 An assignment for the course 1DV610 Introduction to software quality at Linnaeus University.  
+
+## How to use
+new Tokenizer(type, string)
 
 ## ⛩️ Constructor 
 ### constructor(GRAMMAR, string)
@@ -13,11 +16,11 @@ Parameters:
 ### getActiveToken()
 Returns the currently active token in the Lexical Grammar.
 
-### setPreviousToken()
+### setActiveTokenToPrevious()
 Sets the pointer of the current token to previous one in the lexical grammar.
 Throws error if first token has been reached. 
 
-### setPreviousToken()
+### setActiveTokenToNext()
 Sets the pointer of the current token to next in the lexical grammar.
 Throws error if END token has been reached. 
 
