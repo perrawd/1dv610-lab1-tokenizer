@@ -1,4 +1,4 @@
-import TokenizedSubString from './tokenizedSubString.js'
+import Token from './token.js'
 
 /**
  * @class Tokenizer
@@ -16,6 +16,7 @@ export default class Tokenizer {
     this._seperator = type.seperator
     this._grammarTypes = type.grammarTypes
     // Object.assign(this, type)
+    // this._referenceString = string
     this._string = string
 
     this._lexicalGrammar = []
@@ -53,7 +54,7 @@ export default class Tokenizer {
    * Append a END token to the Lexical Grammar.
    *
    */
-  _appendEndTokenToLexicalGrammar () { // appendEndTokenToLexicalGrammar
+  _appendEndTokenToLexicalGrammar () {
     const endToken = this._createNewTokenWith(
       this._lexicalGrammar.length,
       'END',
@@ -71,7 +72,7 @@ export default class Tokenizer {
    * @returns {object} The tokenized substring.
    */
   _createNewTokenWith (index, tokenType, value) {
-    return new TokenizedSubString(index, tokenType, value).token
+    return new Token(index, tokenType, value)
   }
 
   /**

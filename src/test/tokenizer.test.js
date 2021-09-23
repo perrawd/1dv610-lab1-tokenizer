@@ -40,7 +40,7 @@ describe('wordDotGrammar Test Suite', () => {
  */
   test('TC.1', () => {
     const TC1 = new Tokenizer(wordAndDotGrammar, 'a')
-    expect(TC1.getActiveToken()).toStrictEqual({
+    expect(TC1.getActiveToken()).toEqual({
       tokenMatch: 0,
       tokenType: 'WORD',
       value: 'a'
@@ -50,17 +50,19 @@ describe('wordDotGrammar Test Suite', () => {
   test('TC.2', () => {
     const TC2 = new Tokenizer(wordAndDotGrammar, 'a aa')
     TC2.setActiveTokenToNext()
-    expect(TC2.getActiveToken()).toMatchObject({
-      tokenMatch: 1,
-      tokenType: 'WORD',
-      value: 'aa'
-    })
+    expect(
+      TC2.getActiveToken())
+      .toEqual({
+        tokenMatch: 1,
+        tokenType: 'WORD',
+        value: 'aa'
+      })
   })
 
   test('TC.3', () => {
     const TC3 = new Tokenizer(wordAndDotGrammar, 'a.b')
     TC3.setActiveTokenToNext()
-    expect(TC3.getActiveToken()).toMatchObject({
+    expect(TC3.getActiveToken()).toEqual({
       tokenMatch: 1,
       tokenType: 'DOT',
       value: '.'
@@ -70,7 +72,7 @@ describe('wordDotGrammar Test Suite', () => {
   test('TC.4', () => {
     const TC4 = new Tokenizer(wordAndDotGrammar, 'a.b')
     sequenceOperator(TC4, '>>')
-    expect(TC4.getActiveToken()).toMatchObject({
+    expect(TC4.getActiveToken()).toEqual({
       tokenMatch: 2,
       tokenType: 'WORD',
       value: 'b'
@@ -80,7 +82,7 @@ describe('wordDotGrammar Test Suite', () => {
   test('TC.5', () => {
     const TC5 = new Tokenizer(wordAndDotGrammar, 'aa. b')
     sequenceOperator(TC5, '>>')
-    expect(TC5.getActiveToken()).toMatchObject({
+    expect(TC5.getActiveToken()).toEqual({
       tokenMatch: 2,
       tokenType: 'WORD',
       value: 'b'
@@ -90,7 +92,7 @@ describe('wordDotGrammar Test Suite', () => {
   test('TC.6', () => {
     const TC6 = new Tokenizer(wordAndDotGrammar, 'a .b')
     sequenceOperator(TC6, '>><')
-    expect(TC6.getActiveToken()).toMatchObject({
+    expect(TC6.getActiveToken()).toEqual({
       tokenMatch: 1,
       tokenType: 'DOT',
       value: '.'
@@ -99,7 +101,7 @@ describe('wordDotGrammar Test Suite', () => {
 
   test('TC.7', () => {
     const TC7 = new Tokenizer(wordAndDotGrammar, '')
-    expect(TC7.getActiveToken()).toMatchObject({
+    expect(TC7.getActiveToken()).toEqual({
       tokenMatch: 0,
       tokenType: 'END',
       value: 'END'
@@ -108,7 +110,7 @@ describe('wordDotGrammar Test Suite', () => {
 
   test('TC.8', () => {
     const TC8 = new Tokenizer(wordAndDotGrammar, ' ')
-    expect(TC8.getActiveToken()).toMatchObject({
+    expect(TC8.getActiveToken()).toEqual({
       tokenMatch: 0,
       tokenType: 'END',
       value: 'END'
@@ -118,7 +120,7 @@ describe('wordDotGrammar Test Suite', () => {
   test('TC.9', () => {
     const TC9 = new Tokenizer(wordAndDotGrammar, 'a')
     sequenceOperator(TC9, '>')
-    expect(TC9.getActiveToken()).toMatchObject({
+    expect(TC9.getActiveToken()).toEqual({
       tokenMatch: 1,
       tokenType: 'END',
       value: 'END'
@@ -150,7 +152,7 @@ describe('arithmeticGrammar Test Suite', () => {
    */
   test('TC.12', () => {
     const TC12 = new Tokenizer(arithmeticGrammar, '3')
-    expect(TC12.getActiveToken()).toMatchObject({
+    expect(TC12.getActiveToken()).toEqual({
       tokenMatch: 0,
       tokenType: 'NUMBER',
       value: '3'
@@ -159,7 +161,7 @@ describe('arithmeticGrammar Test Suite', () => {
 
   test('TC.13', () => {
     const TC13 = new Tokenizer(arithmeticGrammar, '3.14')
-    expect(TC13.getActiveToken()).toMatchObject({
+    expect(TC13.getActiveToken()).toEqual({
       tokenMatch: 0,
       tokenType: 'NUMBER',
       value: '3.14'
@@ -169,7 +171,7 @@ describe('arithmeticGrammar Test Suite', () => {
   test('TC.14', () => {
     const TC14 = new Tokenizer(arithmeticGrammar, '3 + 54 * 4')
     sequenceOperator(TC14, '>>>')
-    expect(TC14.getActiveToken()).toMatchObject({
+    expect(TC14.getActiveToken()).toEqual({
       tokenMatch: 3,
       tokenType: 'MUL',
       value: '*'
@@ -189,7 +191,7 @@ describe('arithmeticGrammar Test Suite', () => {
   test('TC.16', () => {
     const TC16 = new Tokenizer(arithmeticGrammar, '3.0+54.1     + 4.2')
     sequenceOperator(TC16, '><>>>')
-    expect(TC16.getActiveToken()).toMatchObject({
+    expect(TC16.getActiveToken()).toEqual({
       tokenMatch: 3,
       tokenType: 'ADD',
       value: '+'

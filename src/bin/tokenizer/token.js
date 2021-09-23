@@ -1,9 +1,9 @@
 /**
  * Creates a tokenized substring.
  *
- * @class TokenizedSubString
+ * @class Token
  */
-export default class TokenizedSubString {
+export default class Token {
   /**
    * Constructor.
    *
@@ -12,10 +12,8 @@ export default class TokenizedSubString {
    * @param {string} value The subString.
    */
   constructor (tokenMatch, tokenType, value) {
-    this.token = {
-      tokenMatch,
-      tokenType,
-      value
-    }
+    this.tokenMatch = tokenMatch
+    this.tokenType = tokenType
+    this.value = value
   }
 }
