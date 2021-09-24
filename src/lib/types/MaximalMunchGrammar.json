@@ -2,8 +2,8 @@
   "grammarName": "MaximalMunchGrammar",
   "description": "Grammar type for Maximum Munch.",
   "trim": true,
-  "seperator": "[-+*/]|\\S(?![0-9]*[.]*[0-9])",
-  "grammarTypes": {
+  "delimiter": "[-+*/]|\\S(?![0-9]*[.]*[0-9])",
+  "tokenTypes": {
     "FLOAT": "^[0-9]+\\.[0-9]+",
     "INTEGER": "^[0-9]+",
     "ADD": "^[+]",

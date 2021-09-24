@@ -1,16 +1,14 @@
 import fs from 'fs'
 
 /**
+ * @class LexicalGrammar
  *
- *
- * @class GrammaticType
  */
-export default class GrammaticType {
+export default class LexicalGrammar {
   /**
-   * Creates an instance of GrammaticType.
+   * Creates an instance of LexicalGrammar.
    *
    * @param {string} jsonFile The JSON string for grammar type.
-   * @memberof GrammaticType
    */
   constructor (jsonFile) {
     Object.assign(this,

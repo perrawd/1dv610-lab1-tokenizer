@@ -2,8 +2,8 @@
   "grammarName": "WordAndDotGrammar",
   "description": "Grammar type for word and dot.",
   "trim": true,
-  "seperator": "\\S(?![\\w|åäöÅÄÖ+])|\\.",
-  "grammarTypes": {
+  "delimiter": "\\S(?![\\w|åäöÅÄÖ+])|\\.",
+  "tokenTypes": {
     "WORD": "^[\\w|åäöÅÄÖ]+",
     "DOT": "^\\."
   }

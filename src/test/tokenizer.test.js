@@ -1,12 +1,12 @@
 import { jest, expect } from '@jest/globals'
-import GrammaticType from '../lib/types/GrammarType.js'
+import LexicalGrammar from '../lib/types/lexical-grammar.js'
 import GRAMMAR from '../lib/types/grammar.js'
 import Tokenizer from '../bin/tokenizer/tokenizer'
 
 const { WORD_AND_DOT, ARITHMETIC } = GRAMMAR
 
-const wordAndDotGrammar = new GrammaticType(WORD_AND_DOT)
-const arithmeticGrammar = new GrammaticType(ARITHMETIC)
+const wordAndDotGrammar = new LexicalGrammar(WORD_AND_DOT)
+const arithmeticGrammar = new LexicalGrammar(ARITHMETIC)
 
 /**
  * Operates and calls each sequence.
