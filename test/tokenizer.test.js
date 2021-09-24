@@ -1,9 +1,9 @@
 import { jest, expect } from '@jest/globals'
-import LexicalGrammar from '../lib/types/lexical-grammar.js'
-import GRAMMAR from '../lib/types/grammar.js'
-import Tokenizer from '../bin/tokenizer/tokenizer'
+import LexicalGrammar from '../src/lib/lexical-grammar.js'
+import GRAMMAR_TYPE from '../src/lib/grammar-type.js'
+import Tokenizer from '../src/tokenizer.js'
 
-const { WORD_AND_DOT, ARITHMETIC } = GRAMMAR
+const { WORD_AND_DOT, ARITHMETIC } = GRAMMAR_TYPE
 
 const wordAndDotGrammar = new LexicalGrammar(WORD_AND_DOT)
 const arithmeticGrammar = new LexicalGrammar(ARITHMETIC)

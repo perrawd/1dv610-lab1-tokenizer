@@ -12,10 +12,10 @@
  * @readonly
  * @enum {string}
  */
-const GRAMMAR = Object.freeze({
+const GRAMMAR_TYPE = Object.freeze({
   WORD_AND_DOT: 'WordAndDotGrammar',
   ARITHMETIC: 'ArithmeticGrammar',
   MAXIMAL_MUNCH: 'MaximalMunchGrammar'
 })
 
-export default GRAMMAR
+export default GRAMMAR_TYPE

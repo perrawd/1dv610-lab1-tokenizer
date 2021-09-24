@@ -1,4 +1,4 @@
-import Token from './token.js'
+import Token from './lib/token.js'
 
 /**
  * @class Tokenizer
