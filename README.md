@@ -4,8 +4,8 @@ An assignment for the course 1DV610 Introduction to software quality at Linnaeus
 
 ## How to use
 
-1. Create a new grammar type object for the grammar to be used for lexical analysis.
-2. Create a new lexical analysis.
+1. Create a new lexical grammar type object for the grammar to be used for lexical analysis.
+2. Create a new lexical analysis with the lexical grammar type and the string that is to be tokenized.
 
 ### Modules for usage
 ```
@@ -27,8 +27,10 @@ const testGrammar = new GrammaticType(ARITHMETIC)
 // Create a new lexical analysis.
 const aritmeticTokenizer = new Tokenizer(testGrammar, '32.2+4-2')
 
+// Get active token
 getActiveToken() // 32.2
 
+// Set the current active token to next
 aritmeticTokenizer.setActiveTokenToNext()
 getActiveToken() // +
 

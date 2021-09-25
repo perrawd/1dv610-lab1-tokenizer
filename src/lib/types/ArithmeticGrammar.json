@@ -2,11 +2,14 @@
   "grammarName": "ArithmeticGrammar",
   "description": "Grammar type for Arithmetic.",
   "trim": true,
-  "delimiter": "[-+*/]|\\S(?![0-9]*[.]*[0-9])",
+  "delimiter": "[-+*/()]|\\S(?![0-9]*[.]*[0-9])",
   "tokenTypes": {
     "NUMBER": "^[0-9]+(\\.([0-9])+)?",
     "ADD": "^[+]",
+    "MUL": "^[*]",
     "SUB": "^[-]",
-    "MUL": "^[*]"
+    "DIV": "^[*/]",
+    "OPENPAREN": "^[*(]",
+    "CLOSEPAREN": "^[*)]"
   }
 }
