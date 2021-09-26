@@ -96,7 +96,7 @@ export default class Tokenizer {
    *
    * @returns {object} The token.
    */
-  _tokenizeNextSubString () {
+  _tokenizeNextSubString () { // processAndTokenizeNextSubString
     if (this._trim) this._trimString()
     const subString = this._getNextSubStringFrom(this._string)
     this._cutFromString(subString)

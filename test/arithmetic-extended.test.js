@@ -1,37 +1,12 @@
-import { expect } from '@jest/globals'
+import { jest, expect } from '@jest/globals'
 import LexicalGrammar from '../src/lib/lexical-grammar.js'
 import GRAMMAR_TYPE from '../src/lib/grammar-type.js'
 import Tokenizer from '../src/tokenizer.js'
+import sequenceOperator from './utils/sequence-operator.js'
 
 const { ARITHMETIC } = GRAMMAR_TYPE
 
 const arithmeticGrammar = new LexicalGrammar(ARITHMETIC)
-
-/**
- * Operates and calls each sequence.
- *
- * @param {object} grammar The grammar.
- * @param {string} sequence The sequence.
- */
-const sequenceOperator = (grammar, sequence) => {
-  try {
-    const sequences = sequence.split('')
-    for (const sequence of sequences) {
-      switch (sequence) {
-        case '>':
-          grammar.setActiveTokenToNext()
-          break
-        case '<':
-          grammar.setActiveTokenToPrevious()
-          break
-        default:
-          throw new Error('Invalid sequence')
-      }
-    }
-  } catch (error) {
-    console.error(error)
-  }
-}
 
 test('TC.17 SUB', () => {
   const TC17 = new Tokenizer(arithmeticGrammar, '60   - (18)')
@@ -71,4 +46,24 @@ test('TC.19 OPEN PARENTHESIS', () => {
     tokenType: 'CLOSEPAREN',
     value: ')'
   })
+})
+
+test('TC.19 STRING', () => {
+  const TC20 = new Tokenizer(arithmeticGrammar, '100-16/2')
+  sequenceOperator(TC20, '>>>')
+  expect(TC20.getActiveToken()).toEqual({
+    tokenMatch: 3,
+    tokenType: 'DIV',
+    value: '/'
+  })
+})
+
+test('TC.15 STRING', () => {
+  const spy = jest.spyOn(console, 'error').mockReturnValue()
+  const TC15 = new Tokenizer(arithmeticGrammar, '42 /      HEJ  ')
+  sequenceOperator(TC15, '>>')
+  expect(() => {
+    TC15.toThrow('No matches found for this subtoken!')
+  })
+  spy.mockRestore()
 })

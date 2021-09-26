@@ -1,4 +1,5 @@
 import { jest, expect } from '@jest/globals'
+import sequenceOperator from './utils/sequence-operator.js'
 import LexicalGrammar from '../src/lib/lexical-grammar.js'
 import GRAMMAR_TYPE from '../src/lib/grammar-type.js'
 import Tokenizer from '../src/tokenizer.js'
@@ -7,32 +8,6 @@ const { WORD_AND_DOT, ARITHMETIC } = GRAMMAR_TYPE
 
 const wordAndDotGrammar = new LexicalGrammar(WORD_AND_DOT)
 const arithmeticGrammar = new LexicalGrammar(ARITHMETIC)
-
-/**
- * Operates and calls each sequence.
- *
- * @param {object} grammar The string.
- * @param {string} sequence The sequence.
- */
-const sequenceOperator = (grammar, sequence) => {
-  try {
-    const arr = sequence.split('')
-    for (const seq of arr) {
-      switch (seq) {
-        case '>':
-          grammar.setActiveTokenToNext()
-          break
-        case '<':
-          grammar.setActiveTokenToPrevious()
-          break
-        default:
-          throw new Error('Invalid sequence')
-      }
-    }
-  } catch (error) {
-    console.error(error)
-  }
-}
 
 describe('wordDotGrammar Test Suite', () => {
   /*
