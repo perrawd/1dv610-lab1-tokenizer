@@ -1,6 +1,6 @@
 import { jest, expect } from '@jest/globals'
 import LexicalGrammar from '../src/lib/lexical-grammar/lexical-grammar.js'
-import GRAMMAR_TYPE from '../src/lib/lexical-grammar/grammar-type.js'
+import GRAMMAR_TYPE from '../src/lib/lexical-grammar/grammar-name.js'
 import LexicalAnalysis from '../src/lexical-analysis.js'
 import sequenceOperator from './utils/sequence-operator.js'
 

@@ -14,11 +14,11 @@ export default class LexicalGrammar {
   /**
    * Creates an instance of LexicalGrammar.
    *
-   * @param {string} GRAMMAR_TYPE The JSON string for grammar type.
+   * @param {string} GRAMMAR_NAME The JSON string for grammar type.
    */
-  constructor (GRAMMAR_TYPE) {
+  constructor (GRAMMAR_NAME) {
     Object.assign(this,
-      JSON.parse(fs.readFileSync(new URL(`./types/${GRAMMAR_TYPE}.json`, import.meta.url), 'utf8')
+      JSON.parse(fs.readFileSync(new URL(`./types/${GRAMMAR_NAME}.json`, import.meta.url), 'utf8')
       )
     )
   }
