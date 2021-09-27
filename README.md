@@ -1,61 +1,91 @@
 # Lexical Analysis
-A module that performs a lexical analysis for a given string and grammar.  
-An assignment for the course 1DV610 Introduction to software quality at Linnaeus University.  
+A module that performs a lexical analysis for a given string with a lexical grammar.  
 
-## How to use
+## 🔨 How to use
 
-1. Create a new lexical grammar type object for the grammar to be used for lexical analysis.
-2. Create a new LexicalAnalysis object with the lexical grammar type and the string that is to be tokenized.
-
-### Modules for usage
-```
-```
+1. Instantiate a new lexical grammar object for the grammar to be used for lexical analysis. [Read more](./src/lib/lexical-grammar/README.md)  
+2. Instantiate a new LexicalAnalysis object with a lexical grammar type and the string that is to be analysed.
 
 Example:
 ```
-// Import the needed modules.
-import GrammaticType from '../src/lib/types/GrammarType.js'
-import GRAMMAR from '../src/lib/types/grammar.js'
-import Tokenizer from '../src/bin/tokenizer/tokenizer.js'
+// Import modules.
+import GrammaticType from './src/lib/lexical-grammar/lexical-grammar.js'
+import GRAMMAR_NAME from './src/lib/lexical-grammar/grammar-name.js'
+import LexicalAnalysis from './src/lexical-analysis.js'
 
-// Import ENUM for the grammar type (optional)
-const { ARITHMETIC } = GRAMMAR
+// Assign grammar type (optional).
+const { ARITHMETIC } = GRAMMAR_NAME
 
 // Instantiate a new object for the grammar type to be used.
-const testGrammar = new GrammaticType(ARITHMETIC)
+const arithmeticGrammar = new GrammaticType(ARITHMETIC)
 
 // Create a new lexical analysis.
-const aritmeticTokenizer = new Tokenizer(testGrammar, '32.2+4-2')
+const aritmeticAnalysis = new LexicalAnalysis(arithmeticGrammar, '38 + 4')
 
 // Get active token
-getActiveToken() // 32.2
+getActiveToken() // Token { tokenMatch: 0, tokenType: 'NUMBER', value: '38' }
 
-// Set the current active token to next
+// Set the current active token to next.
 aritmeticTokenizer.setActiveTokenToNext()
-getActiveToken() // +
+
+getActiveToken() // Token { tokenMatch: 1, tokenType: 'ADD', value: '+' }
+
+// Set the current active token to next (twice).
+aritmeticTokenizer.setActiveTokenToNext()
+aritmeticTokenizer.setActiveTokenToNext()
+
+getActiveToken() // Token { tokenMatch: 3, tokenType: 'END', value: 'END' }
+
+// Set the current active token to previous.
+aritmeticTokenizer.setActiveTokenToPrevious()
+
+getActiveToken() // Token { tokenMatch: 2, tokenType: 'NUMBER', value: '4' }
 
 ```
 
-## ⛩️ Constructor 
-### constructor(GRAMMAR, string)
-Parameters: 
-- {object} GRAMMAR: The type of tokenization. Enums
-- {string} string: The string to be tokenized.
-
-## 🔧 Public methods
+## 🧰 Public methods
 
 ### getActiveToken()
-Returns the currently active token in the Lexical Grammar.
+Returns the currently active token.
 
 ### setActiveTokenToPrevious()
-Sets the pointer of the current token to the previous one in the lexical grammar.
+Sets the pointer of the current token to the previous one in the token list.  
 Throws error if first token has been reached. 
 
 ### setActiveTokenToNext()
-Sets the pointer of the current token to the next one in the lexical grammar.
+Sets the pointer of the current token to the next one in the token list.  
+Creates the next token if needed.  
 Throws error if END token has been reached. 
 
-## Add your own grammar
+### getTokenList()
+Returns an array of the created tokens.
+
+## ✏️ Add your own grammar
+[Read more](./src/lib/lexical-grammar/README.md)
+
+## ⛩️ Classes
+
+### LexicalAnalysis
+Instantiate a new ```LexicalAnalysis``` object. 
+
+Constructor arguments: 
+- {LexicalGrammar} ```LexicalGrammar``` The lexical grammar to be used.  
+- {string} The string to be analysed/tokenized.
+
+### LexicalGrammar
+Instantiate a new ```LexicalGrammar``` object. 
+
+Constructor arguments: 
+- {string} ```GRAMMAR_NAME``` name of the grammar to be used.
+
+### Token
+Used by ```LexicalAnalysis```.
+Instantiate a new ```Token``` object. 
+
+Constructor arguments: 
+- {string} ```tokenMatch``` The index of token.  
+- {string} ```tokenType``` The tokenType.  
+- {string} ```value``` The subString.  
 
 ## 🚀 Built with: 
 - JavaScript (ES6)
@@ -66,16 +96,3 @@ Throws error if END token has been reached.
 
 ✍️ Coding standard:
 - @lnu/eslint-config
-
-## Notes: 
-- This Tokenizer will not handle whitespaces
-
-## Classes
-
-### Token
-Creates a new object representing a tokeized substring. 
-
-Constructor parameters: 
-- {string} tokenMatch The index of token.
-- {string} tokenType The tokenType.
-- {string} value The subString.
