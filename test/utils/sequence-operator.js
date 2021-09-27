@@ -1,19 +1,26 @@
 /**
- * Operates and calls each sequence.
+ * Module for sequenceOperator.
  *
- * @param {object} tokenList The grammar.
- * @param {string} sequence The sequence.
+ * @author Per Rawdin <per.rawdin@student.lnu.se>
+ * @version 1.0.0
  */
-const sequenceOperator = (tokenList, sequence) => {
+
+/**
+ * Operates and calls sequences of a Lexical Analysis.
+ *
+ * @param {object} lexicalAnalysis The lexical analysis.
+ * @param {string} sequences The sequence.
+ */
+const sequenceOperator = (lexicalAnalysis, sequences) => {
   try {
-    const sequences = sequence.split('')
-    for (const sequence of sequences) {
+    const sequenceList = sequences.split('')
+    for (const sequence of sequenceList) {
       switch (sequence) {
         case '>':
-          tokenList.setActiveTokenToNext()
+          lexicalAnalysis.setActiveTokenToNext()
           break
         case '<':
-          tokenList.setActiveTokenToPrevious()
+          lexicalAnalysis.setActiveTokenToPrevious()
           break
         default:
           throw new Error('Invalid sequence')
