@@ -281,4 +281,13 @@ export default class LexicalAnalysis {
   getActiveToken () {
     return this._activeToken
   }
+
+  /**
+   * Returns the token list.
+   *
+   * @returns {Array} The token list.
+   */
+  getTokenList () {
+    return this._tokenList
+  }
 }
