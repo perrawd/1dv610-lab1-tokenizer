@@ -1,7 +1,7 @@
 import { jest, expect } from '@jest/globals'
 import sequenceOperator from './utils/sequence-operator.js'
-import LexicalGrammar from '../src/lib/lexical-grammar.js'
-import GRAMMAR_TYPE from '../src/lib/grammar-type.js'
+import LexicalGrammar from '../src/lib/lexical-grammar/lexical-grammar.js'
+import GRAMMAR_TYPE from '../src/lib/lexical-grammar/grammar-type.js'
 import LexicalAnalysis from '../src/lexical-analysis.js'
 
 const { WORD_AND_DOT, ARITHMETIC } = GRAMMAR_TYPE
