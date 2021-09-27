@@ -3,7 +3,7 @@ import Token from './lib/token.js'
 /**
  * @class Tokenizer
  */
-export default class Tokenizer {
+export default class LexicalAnalysis {
   /**
    * Creates an instance of Tokenizer.
    *
@@ -129,7 +129,7 @@ export default class Tokenizer {
   }
 
   /**
-   * Cut the first matching substring from the string.
+   * Cut the processed substring from the string.
    *
    * @param {string} subString The substring.
    */

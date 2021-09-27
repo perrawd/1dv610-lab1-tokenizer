@@ -1,11 +1,11 @@
-# Tokenizer
+# Lexical Analysis
 A module that performs a lexical analysis for a given string and grammar.  
 An assignment for the course 1DV610 Introduction to software quality at Linnaeus University.  
 
 ## How to use
 
 1. Create a new lexical grammar type object for the grammar to be used for lexical analysis.
-2. Create a new lexical analysis with the lexical grammar type and the string that is to be tokenized.
+2. Create a new LexicalAnalysis object with the lexical grammar type and the string that is to be tokenized.
 
 ### Modules for usage
 ```
@@ -72,8 +72,8 @@ Throws error if END token has been reached.
 
 ## Classes
 
-### TokenizedSubString
-Creates a new object representing a token of a substring. 
+### Token
+Creates a new object representing a tokeized substring. 
 
 Constructor parameters: 
 - {string} tokenMatch The index of token.

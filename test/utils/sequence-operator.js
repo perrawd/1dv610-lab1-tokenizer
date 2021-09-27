@@ -1,19 +1,19 @@
 /**
  * Operates and calls each sequence.
  *
- * @param {object} grammar The grammar.
+ * @param {object} tokenList The grammar.
  * @param {string} sequence The sequence.
  */
-const sequenceOperator = (grammar, sequence) => {
+const sequenceOperator = (tokenList, sequence) => {
   try {
     const sequences = sequence.split('')
     for (const sequence of sequences) {
       switch (sequence) {
         case '>':
-          grammar.setActiveTokenToNext()
+          tokenList.setActiveTokenToNext()
           break
         case '<':
-          grammar.setActiveTokenToPrevious()
+          tokenList.setActiveTokenToPrevious()
           break
         default:
           throw new Error('Invalid sequence')
