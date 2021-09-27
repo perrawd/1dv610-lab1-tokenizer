@@ -9,9 +9,9 @@ A module that performs a lexical analysis for a given string with a lexical gram
 Example:
 ```
 // Import modules.
-import GrammaticType from './src/lib/lexical-grammar/lexical-grammar.js'
-import GRAMMAR_NAME from './src/lib/lexical-grammar/grammar-name.js'
-import LexicalAnalysis from './src/lexical-analysis.js'
+import GrammaticType from '../src/lib/lexical-grammar/lexical-grammar.js'
+import GRAMMAR_NAME from '../src/lib/lexical-grammar/grammar-name.js'
+import LexicalAnalysis from '../src/lexical-analysis.js'
 
 // Assign grammar type (optional).
 const { ARITHMETIC } = GRAMMAR_NAME
@@ -23,23 +23,25 @@ const arithmeticGrammar = new GrammaticType(ARITHMETIC)
 const aritmeticAnalysis = new LexicalAnalysis(arithmeticGrammar, '38 + 4')
 
 // Get active token
-getActiveToken() // Token { tokenMatch: 0, tokenType: 'NUMBER', value: '38' }
+console.log(aritmeticAnalysis.getActiveToken()) // Token { tokenMatch: 0, tokenType: 'NUMBER', value: '38' }
 
 // Set the current active token to next.
-aritmeticTokenizer.setActiveTokenToNext()
+aritmeticAnalysis.setActiveTokenToNext()
 
-getActiveToken() // Token { tokenMatch: 1, tokenType: 'ADD', value: '+' }
+console.log(aritmeticAnalysis.getActiveToken()) // Token { tokenMatch: 1, tokenType: 'ADD', value: '+' }
 
 // Set the current active token to next (twice).
-aritmeticTokenizer.setActiveTokenToNext()
-aritmeticTokenizer.setActiveTokenToNext()
+aritmeticAnalysis.setActiveTokenToNext()
+aritmeticAnalysis.setActiveTokenToNext()
 
-getActiveToken() // Token { tokenMatch: 3, tokenType: 'END', value: 'END' }
+console.log(aritmeticAnalysis.getActiveToken()) // Token { tokenMatch: 3, tokenType: 'END', value: 'END' }
 
 // Set the current active token to previous.
-aritmeticTokenizer.setActiveTokenToPrevious()
+aritmeticAnalysis.setActiveTokenToPrevious()
 
-getActiveToken() // Token { tokenMatch: 2, tokenType: 'NUMBER', value: '4' }
+console.log(aritmeticAnalysis.getActiveToken()) // Token { tokenMatch: 2, tokenType: 'NUMBER', value: '4' }
+
+console.table(aritmeticAnalysis.getTokenList()) // Table of token list.
 
 ```
 
