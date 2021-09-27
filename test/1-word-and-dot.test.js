@@ -114,7 +114,7 @@ describe('wordDotGrammar Test Suite', () => {
     const spy = jest.spyOn(console, 'error').mockReturnValue()
     const wordAndDotTest = new LexicalAnalysis(wordAndDotGrammar, '!')
     expect(() => {
-      wordAndDotTest.toThrow('No matches found for this subtoken!')
+      wordAndDotTest.toThrow('No matches found for this substring.')
     })
     spy.mockRestore()
   })

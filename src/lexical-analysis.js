@@ -151,7 +151,7 @@ export default class LexicalAnalysis {
   _getGrammarMatchesFor (subString) {
     try {
       const matches = this._matchTokenTypesTo(subString)
-      if (!matches.length) { throw new Error('No matches found for this subtoken!') }
+      if (!matches.length) { throw new Error('No matches found for this substring.') }
       return matches
     } catch (error) {
       this._processError(error)

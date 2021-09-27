@@ -67,7 +67,7 @@ describe('Arithmetic test suite', () => {
     const arithmeticTest = new LexicalAnalysis(arithmeticGrammar, '42 /      HEJ  ')
     sequenceOperator(arithmeticTest, '>>')
     expect(() => {
-      arithmeticTest.toThrow('No matches found for this subtoken!')
+      arithmeticTest.toThrow('No matches found for this substring.')
     })
     spy.mockRestore()
   })
@@ -85,9 +85,9 @@ describe('Arithmetic test suite', () => {
   test('Test case 3.8: Set active token before first token should throw Error', () => {
     const spy = jest.spyOn(console, 'error').mockReturnValue()
     const arithmeticTest = new LexicalAnalysis(arithmeticGrammar, '126/3')
-    sequenceOperator(arithmeticTest, '><')
+    sequenceOperator(arithmeticTest, '><<')
     expect(() => {
-      arithmeticTest.setActiveTokenToPrevious().toThrow('First token has been reached.')
+      arithmeticTest.toThrow('First token has been reached.')
     })
     spy.mockRestore()
   })

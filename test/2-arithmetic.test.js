@@ -45,7 +45,7 @@ describe('Arithmetic test suite', () => {
     const arithmeticTest = new LexicalAnalysis(arithmeticGrammar, '3+5 # 4')
     sequenceOperator(arithmeticTest, '>>>')
     expect(() => {
-      arithmeticTest.toThrow('No matches found for this subtoken!')
+      arithmeticTest.toThrow('No matches found for this substring.')
     })
     spy.mockRestore()
   })
