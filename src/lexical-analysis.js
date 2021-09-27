@@ -200,7 +200,7 @@ export default class LexicalAnalysis {
    */
   setActiveTokenToPrevious () {
     try {
-      if (this._isFirstToken()) { throw new Error('First index reached') }
+      if (this._isFirstToken()) { throw new Error('First token has been reached.') }
       this._updateActiveTokenIndexToPrevious()
       this._setActiveToken()
     } catch (error) {
@@ -237,7 +237,7 @@ export default class LexicalAnalysis {
    */
   setActiveTokenToNext () {
     try {
-      if (this._isEndToken()) { throw new Error('Last TOKEN reached') }
+      if (this._isEndToken()) { throw new Error('Last token has been reached.') }
       this._processNextToken()
       this._updateActiveTokenIndexToNext()
       this._setActiveToken()

@@ -105,7 +105,7 @@ describe('wordDotGrammar Test Suite', () => {
     const spy = jest.spyOn(console, 'error').mockReturnValue()
     const wordAndDotTest = new LexicalAnalysis(wordAndDotGrammar, 'a')
     expect(() => {
-      wordAndDotTest.setActiveTokenToPrevious().toThrow('First index reached')
+      wordAndDotTest.setActiveTokenToPrevious().toThrow('First token has been reached.')
     })
     spy.mockRestore()
   })
@@ -115,6 +115,16 @@ describe('wordDotGrammar Test Suite', () => {
     const wordAndDotTest = new LexicalAnalysis(wordAndDotGrammar, '!')
     expect(() => {
       wordAndDotTest.toThrow('No matches found for this subtoken!')
+    })
+    spy.mockRestore()
+  })
+
+  test('Test case 1.12: Set active token after END token should throw Error', () => {
+    const spy = jest.spyOn(console, 'error').mockReturnValue()
+    const wordAndDotTest = new LexicalAnalysis(wordAndDotGrammar, 'Can we get behind END?')
+    sequenceOperator(wordAndDotTest, '>>>>>')
+    expect(() => {
+      wordAndDotTest.toThrow('Last token has been reached.')
     })
     spy.mockRestore()
   })

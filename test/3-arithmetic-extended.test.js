@@ -52,7 +52,7 @@ describe('Arithmetic test suite', () => {
     })
   })
 
-  test('Test case 3.5 Grammar should be able to handle no whitespaces between substring.', () => {
+  test('Test case 3.5: Grammar should be able to handle no whitespaces between substrings.', () => {
     const arithmeticTest = new LexicalAnalysis(arithmeticGrammar, '100-16/2')
     sequenceOperator(arithmeticTest, '>>>')
     expect(arithmeticTest.getActiveToken()).toEqual({
@@ -68,6 +68,36 @@ describe('Arithmetic test suite', () => {
     sequenceOperator(arithmeticTest, '>>')
     expect(() => {
       arithmeticTest.toThrow('No matches found for this subtoken!')
+    })
+    spy.mockRestore()
+  })
+
+  test('Test case 3.7: After end of tokenized string should append END token.', () => {
+    const arithmeticTest = new LexicalAnalysis(arithmeticGrammar, '84/2')
+    sequenceOperator(arithmeticTest, '>>>')
+    expect(arithmeticTest.getActiveToken()).toEqual({
+      tokenMatch: 3,
+      tokenType: 'END',
+      value: 'END'
+    })
+  })
+
+  test('Test case 3.8: Set active token before first token should throw Error', () => {
+    const spy = jest.spyOn(console, 'error').mockReturnValue()
+    const arithmeticTest = new LexicalAnalysis(arithmeticGrammar, '126/3')
+    sequenceOperator(arithmeticTest, '><')
+    expect(() => {
+      arithmeticTest.setActiveTokenToPrevious().toThrow('First token has been reached.')
+    })
+    spy.mockRestore()
+  })
+
+  test('Test case 3.9: Set active token after END token should throw Error', () => {
+    const spy = jest.spyOn(console, 'error').mockReturnValue()
+    const arithmeticTest = new LexicalAnalysis(arithmeticGrammar, '45-3.0/2')
+    sequenceOperator(arithmeticTest, '>>>>>')
+    expect(() => {
+      arithmeticTest.toThrow('Last token has been reached.')
     })
     spy.mockRestore()
   })
