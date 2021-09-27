@@ -1,3 +1,9 @@
+/**
+ * Module for LexicalAnalysis.
+ *
+ * @author Per Rawdin <per.rawdin@student.lnu.se>
+ * @version 1.0.0
+ */
 import Token from './lib/token/token.js'
 
 /**
@@ -5,7 +11,7 @@ import Token from './lib/token/token.js'
  */
 export default class LexicalAnalysis {
   /**
-   * Creates an instance of Tokenizer.
+   * Creates an instance of LexicalAnalysis.
    *
    * @param {object} lexicalGrammar The lexical grammar.
    * @param {string} string The string to be tokenized.
@@ -25,7 +31,7 @@ export default class LexicalAnalysis {
   }
 
   /**
-   * Process next token to be appended to the Lexical Grammar.
+   * Process next token to be appended to the token list.
    *
    */
   _processNextToken () {
@@ -49,7 +55,7 @@ export default class LexicalAnalysis {
   }
 
   /**
-   * Append a END token to the Lexical Grammar.
+   * Append a END token to the token list.
    *
    */
   _appendEndTokenToTokenList () {
@@ -62,9 +68,9 @@ export default class LexicalAnalysis {
   }
 
   /**
-   * Creates a new token.
+   * Create a new token.
    *
-   * @param {number} index Index of the token in the Lexical Grammar.
+   * @param {number} index Index of the token.
    * @param {string} tokenType The token type.
    * @param {string} value Value of the token.
    * @returns {object} The token.
@@ -74,7 +80,7 @@ export default class LexicalAnalysis {
   }
 
   /**
-   * Append a token to the Lexical Grammar.
+   * Append a token to the token list.
    *
    * @param {object} token The token.
    */
@@ -83,20 +89,20 @@ export default class LexicalAnalysis {
   }
 
   /**
-   * Append the next token to the Lexical Grammar.
+   * Append the next tokenized substring to the token list.
    *
    */
-  _appendNextTokenToTokenList () { // _appendNextValidTokenToTokenList
-    const token = this._tokenizeNextSubString()
+  _appendNextTokenToTokenList () {
+    const token = this._processAndTokenizeNextSubString()
     this._appendToTokenList(token)
   }
 
   /**
-   * Tokenizes the next substring in the string.
+   * Tokenizes the next substring.
    *
    * @returns {object} The token.
    */
-  _tokenizeNextSubString () { // processAndTokenizeNextSubString
+  _processAndTokenizeNextSubString () {
     if (this._trim) this._trimString()
     const subString = this._getNextSubStringFrom(this._string)
     this._cutFromString(subString)
@@ -111,17 +117,16 @@ export default class LexicalAnalysis {
   }
 
   /**
-   * Trims the string.
-   *
+   * Trim the string.
    */
   _trimString () {
     this._string = this._string.trim()
   }
 
   /**
-   * Slices the first substring from the string.
+   * Returns the first substring from the string.
    *
-   * @param {string} string The string to slice.
+   * @param {string} string The string to slice from.
    * @returns {string} The substring sliced from string.
    */
   _getNextSubStringFrom (string) {
@@ -170,7 +175,7 @@ export default class LexicalAnalysis {
   }
 
   /**
-   * Matches pattern to substring and returns boolean value.
+   * Matches grammar pattern to substring.
    *
    * @param {string} pattern A Regexp pattern.
    * @param {string} subString The substring.
@@ -192,7 +197,6 @@ export default class LexicalAnalysis {
 
   /**
    * Set active token to previous.
-   *
    */
   setActiveTokenToPrevious () {
     try {
@@ -215,7 +219,6 @@ export default class LexicalAnalysis {
 
   /**
    * Set the activeTokenIndex to previous.
-   *
    */
   _updateActiveTokenIndexToPrevious () {
     this._activeTokenIndex -= 1
@@ -231,7 +234,6 @@ export default class LexicalAnalysis {
 
   /**
    * Tokenize the next substring.
-   *
    */
   setActiveTokenToNext () {
     try {
