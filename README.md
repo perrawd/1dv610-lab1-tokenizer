@@ -98,3 +98,4 @@ Constructor arguments:
 
 ✍️ Coding standard:
 - @lnu/eslint-config
+ 
