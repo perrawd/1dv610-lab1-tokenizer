@@ -5,6 +5,8 @@
   "delimiter": "\\S(?![\\w|åäöÅÄÖ+])|\\.",
   "tokenTypes": {
     "WORD": "^[\\w|åäöÅÄÖ]+",
-    "DOT": "^\\."
+    "DOT": "^\\.",
+    "QUESTION": "^\\?",
+    "EXCLAMATION": "^\\!"
   }
 }
