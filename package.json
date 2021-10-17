@@ -3,7 +3,8 @@
   "version": "1.0.3",
   "description": "1DV610 Laboration-1 Tokenizer",
   "type": "module",
-  "main": "src/app.js",
+  "main": "src/app",
+  "typings": "src/app",
   "scripts": {
     "start": "node src/app.js",
     "lint": "npx eslint ./src || exit 0",
