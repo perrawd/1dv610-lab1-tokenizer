@@ -6,6 +6,7 @@
  */
 import Token from './lib/token/token.js'
 import TokenMatch from './token-match.js'
+import TokenList from './token-list.js'
 
 /**
  * @class Tokenizer
@@ -22,14 +23,12 @@ export default class LexicalAnalysis {
     this._trim = lexicalGrammar.trim
     /*
     this._tokenTypes = lexicalGrammar.tokenTypes
-    
-    
-*/
+    */
     this._string = string
 
     this._tokenMatch = new TokenMatch(lexicalGrammar, string)
 
-    this._tokenList = []
+    this._tokenList = new TokenList()
     this._processNextToken()
 
     this._activeTokenIndex = 0
@@ -123,7 +122,7 @@ export default class LexicalAnalysis {
     return token
     */
    const tokenMatch = this._tokenMatch.getTokenMatch(subString)
-    return tokenMatch
+  return tokenMatch
   }
 
   /**
