@@ -1,4 +1,3 @@
-import Token from './token.js'
 import TokenMatch from './token-match.js'
 
 export default class TokenList extends Array {
@@ -6,13 +5,8 @@ export default class TokenList extends Array {
     super()
     this._delimiter = lexicalGrammar.delimiter
     this._trim = lexicalGrammar.trim
-    /*
-    this._tokenTypes = lexicalGrammar.tokenTypes
-    */
     this._string = string
-
     this._tokenMatch = new TokenMatch(lexicalGrammar, string)
-
 
     this._processNextToken()
   }
@@ -22,9 +16,11 @@ export default class TokenList extends Array {
    */
    _processNextToken () {
     try {
-      this._isEmpty(this._string)
-        ? this._appendEndTokenToTokenList()
-        : this._appendNextTokenToTokenList()
+      if (this._isEmpty(this._string)) {
+        this._appendEndTokenToTokenList()
+      } else {
+        this._appendNextTokenToTokenList()
+      }
     } catch (error) {
       this._processError(error)
     }

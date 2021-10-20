@@ -7,6 +7,6 @@ export default class LongestMatch {
   }
 
   getLongestMatch () {
-    return this._matches.sort((a, b) => b.value.length - a.value.length)[0]
+    return this._matches.sort((primary, secondary) => secondary.value.length - primary.value.length)[0]
   }
 }

@@ -18,13 +18,10 @@ export default class LexicalAnalysis {
    * @param {string} string The string to be tokenized.
    */
   constructor (lexicalGrammar, string) {
-
     this._tokenList = new TokenList(lexicalGrammar, string)
     this._activeTokenIndex = 0
     this._activeToken = this._tokenList[this._activeTokenIndex]
   }
-
-
 
   /**
    * Set active token to previous.
