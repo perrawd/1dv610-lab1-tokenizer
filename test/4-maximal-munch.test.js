@@ -37,7 +37,7 @@ describe('Maximal munch grammar test suite', () => {
         value: '1.23'
       }
     ]
-    const longestMatchTest = new LongestMatch(matches)
+    const longestMatchTest = new LongestMatch('1.23', maximalMunchGrammar.tokenTypes)
     expect(longestMatchTest.getLongestMatch()).toEqual(
       {
         tokenMatch: 0,

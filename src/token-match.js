@@ -1,6 +1,5 @@
-import LongestMatch from './longest-match.js'
-import GrammarMatches from './grammar-matches.js'
 import Token from './token.js'
+import LongestMatch from './longest-match.js'
 
 export default class TokenMatch {
   constructor (lexicalGrammar, string) {
@@ -15,9 +14,9 @@ export default class TokenMatch {
   }
 
   getTokenMatch (subString) {
-    this._grammarMatches = new GrammarMatches(this._tokenTypes)
-    const matches = this._grammarMatches._getGrammarMatchesFor(subString)
-    const maximumMunch = new LongestMatch(matches)
+
+  
+    const maximumMunch = new LongestMatch(subString, this._tokenTypes)
     const longestMatch = maximumMunch.getLongestMatch()
     const token = this._createNewTokenWith(
       this._index,
@@ -26,38 +25,6 @@ export default class TokenMatch {
     )
     this._index += 1
     return token
-  }
-
-  /**
-   * Set active token to previous.
-   */
-  setActiveTokenToPrevious () {
-    try {
-      if (this._isFirstToken()) { throw new Error('First token has been reached.') }
-      this._updateActiveTokenIndexToPrevious()
-      this._setActiveToken()
-    } catch (error) {
-      this._processError(error)
-    }
-  }
-
-  /**
-   * Validate if current token is first token.
-   *
-   * @returns {boolean} Returns true if current token is the first.
-   */
-  _isFirstToken () {
-    return this._activeTokenIndex === 0
-  }
-
-  /**
-   * Process error handling.
-   *
-   * @param {object} error The Error object.
-   */
-   _processError (error) {
-    console.error(`Error: ${error.message}`)
-    process.exitCode = 1
   }
 
   /**
