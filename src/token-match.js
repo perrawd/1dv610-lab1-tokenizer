@@ -1,4 +1,4 @@
-import Token from './lib/token/token.js'
+import Token from './token.js'
 
 export default class TokenMatch {
   constructor (lexicalGrammar, string) {

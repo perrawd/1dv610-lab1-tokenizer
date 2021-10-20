@@ -35,7 +35,7 @@ describe('Maximal munch grammar test suite', () => {
         value: '1.23'
       }
     ]
-    expect(maximalMunchTest._tokenMatch._getlongestMatchFrom(matches)).toEqual(
+    expect(maximalMunchTest._tokenList._tokenMatch._getlongestMatchFrom(matches)).toEqual(
       {
         tokenMatch: 0,
         tokenType: 'FLOAT',
