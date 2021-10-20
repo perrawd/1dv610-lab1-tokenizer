@@ -1,3 +1,4 @@
+import LongestMatch from './longest-match.js'
 import Token from './token.js'
 
 export default class TokenMatch {
@@ -13,7 +14,8 @@ export default class TokenMatch {
 
   getTokenMatch (subString) {
     const matches = this._getGrammarMatchesFor(subString)
-    const longestMatch = this._getlongestMatchFrom(matches)
+    const maximumMunch = new LongestMatch(matches)
+    const longestMatch = maximumMunch.getLongestMatch()
     const token = this._createNewTokenWith(
       this._index,
       longestMatch.tokenType,
@@ -65,16 +67,6 @@ export default class TokenMatch {
    */
   _patternMatch (pattern, subString) {
     return new RegExp(pattern).test(subString)
-  }
-
-  /**
-   * Get the longest match from an array of matches.
-   *
-   * @param {Array} matches Array of matches.
-   * @returns {object} The longest match (Maximum munch).
-   */
-  _getlongestMatchFrom (matches) {
-    return matches.sort((a, b) => b.value.length - a.value.length)[0]
   }
 
   /**
