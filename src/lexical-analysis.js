@@ -1,4 +1,5 @@
 import TokenList from './token-list.js'
+import TokenOutOfBoundsException from './error/TokenOutOfBoundsException.js'
 import manageError from './error/error-handling.js'
 
 export default class LexicalAnalysis {
@@ -10,11 +11,11 @@ export default class LexicalAnalysis {
 
   setActiveTokenToPrevious () {
     try {
-      if (this._isFirstToken()) { throw new Error('First token has been reached.') }
+      if (this._isFirstToken()) { throw new TokenOutOfBoundsException('First token has been reached.') }
       this._updateActiveTokenIndexToPrevious()
       this._setActiveToken()
     } catch (error) {
-      this._processError(error)
+      manageError(error)
     }
   }
 
@@ -32,7 +33,7 @@ export default class LexicalAnalysis {
 
   setActiveTokenToNext () {
     try {
-      if (this._isEndToken()) { throw new Error('Last token has been reached.') }
+      if (this._isEndToken()) { throw new TokenOutOfBoundsException('Last token has been reached.') }
       this._tokenList._processNextToken()
       this._updateActiveTokenIndexToNext()
       this._setActiveToken()
