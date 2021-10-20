@@ -38,11 +38,11 @@ export default class TokenList extends Array {
   }
 
   _appendNextTokenToTokenList () {
-    const token = this._processAndTokenizeNextSubString()
+    const token = this._getNextToken()
     this._appendToTokenList(token)
   }
 
-  _processAndTokenizeNextSubString () {
+  _getNextToken () {
     if (this._trim) this._trimString()
     const subString = this._getNextSubStringFrom(this._string)
     this._cutFromString(subString)

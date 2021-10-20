@@ -1,4 +1,3 @@
-import Token from './token.js'
 import TokenMatchException from './error/TokenMatchException.js'
 import manageError from './error/error-handling.js'
 
@@ -29,9 +28,5 @@ export default class GrammarMatches extends Array {
 
    _patternMatch (pattern, subString) {
     return new RegExp(pattern).test(subString)
-  }
-
-   _createNewTokenWith (index, tokenType, value) {
-    return new Token(index, tokenType, value)
   }
 }

@@ -9,7 +9,11 @@ export default class LexicalAnalysis {
     this._activeToken = this._tokenList[this._activeTokenIndex]
   }
 
-  setActiveTokenToPrevious () {
+  getActiveToken() {
+    return this._activeToken
+  }
+
+  setActiveTokenToPrevious() {
     try {
       if (this._isFirstToken()) { throw new TokenOutOfBoundsException('First token has been reached.') }
       this._updateActiveTokenIndexToPrevious()
@@ -19,19 +23,19 @@ export default class LexicalAnalysis {
     }
   }
 
-  _isFirstToken () {
+  _isFirstToken() {
     return this._activeTokenIndex === 0
   }
 
-  _updateActiveTokenIndexToPrevious () {
+  _updateActiveTokenIndexToPrevious() {
     this._activeTokenIndex -= 1
   }
 
-  _setActiveToken () {
+  _setActiveToken() {
     this._activeToken = this._tokenList[this._activeTokenIndex]
   }
 
-  setActiveTokenToNext () {
+  setActiveTokenToNext() {
     try {
       if (this._isEndToken()) { throw new TokenOutOfBoundsException('Last token has been reached.') }
       this._tokenList._processNextToken()
@@ -42,19 +46,11 @@ export default class LexicalAnalysis {
     }
   }
 
-  _isEndToken () {
+  _isEndToken() {
     return this._tokenList[this._tokenList.length - 1].tokenType === 'END'
   }
 
-  _updateActiveTokenIndexToNext () {
+  _updateActiveTokenIndexToNext() {
     this._activeTokenIndex += 1
-  }
-
-  getActiveToken () {
-    return this._activeToken
-  }
-
-  getTokenList () {
-    return this._tokenList
   }
 }
