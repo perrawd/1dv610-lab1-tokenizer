@@ -1,4 +1,5 @@
 import TokenMatch from './token-match.js'
+import manageError from './error/error-handling.js'
 
 export default class TokenList extends Array {
   constructor (lexicalGrammar, string) {
@@ -19,7 +20,7 @@ export default class TokenList extends Array {
         this._appendNextTokenToTokenList()
       }
     } catch (error) {
-      this._processError(error)
+      manageError(error)
     }
   }
 

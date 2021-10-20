@@ -1,4 +1,5 @@
 import TokenList from './token-list.js'
+import manageError from './error/error-handling.js'
 
 export default class LexicalAnalysis {
   constructor (lexicalGrammar, string) {
@@ -36,7 +37,7 @@ export default class LexicalAnalysis {
       this._updateActiveTokenIndexToNext()
       this._setActiveToken()
     } catch (error) {
-      this._processError(error)
+      manageError(error)
     }
   }
 
@@ -46,11 +47,6 @@ export default class LexicalAnalysis {
 
   _updateActiveTokenIndexToNext () {
     this._activeTokenIndex += 1
-  }
-
-  _processError (error) {
-    console.error(`Error: ${error.message}`)
-    process.exitCode = 1
   }
 
   getActiveToken () {

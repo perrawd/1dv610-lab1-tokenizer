@@ -1,4 +1,5 @@
 import Token from './token.js'
+import manageError from './error/error-handling.js'
 
 export default class GrammarMatches extends Array {
   constructor (tokenTypes) {
@@ -13,7 +14,7 @@ export default class GrammarMatches extends Array {
       if (!this._matches.length) { throw new Error('No matches found for this substring.') }
       return this._matches
     } catch (error) {
-      console.error(error)
+      manageError(error)
     }
   }
 
