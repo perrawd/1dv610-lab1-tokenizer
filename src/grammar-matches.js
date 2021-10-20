@@ -7,12 +7,6 @@ export default class GrammarMatches extends Array {
     this._tokenTypes = tokenTypes
   }
 
-  /**
- * Matches grammar types to a substring.
- *
- * @param {string} subString string.
- * @returns {Array} Array.
- */
    _getGrammarMatchesFor (subString) {
     try {
       this._matchTokenTypesTo(subString)
@@ -23,12 +17,6 @@ export default class GrammarMatches extends Array {
     }
   }
 
-  /**
-   * Returns an array of grammar matches for a substring.
-   *
-   * @param {string} subString The substring.
-   * @returns {Array} Array of matches.
-   */
    _matchTokenTypesTo (subString) {
     for (const [tokenType, pattern] of Object.entries(this._tokenTypes)) {
       if (this._patternMatch(pattern, subString)) {
@@ -37,25 +25,10 @@ export default class GrammarMatches extends Array {
     }
   }
 
-  /**
-   * Matches grammar pattern to substring.
-   *
-   * @param {string} pattern A Regexp pattern.
-   * @param {string} subString The substring.
-   * @returns {boolean} If a match is true.
-   */
    _patternMatch (pattern, subString) {
     return new RegExp(pattern).test(subString)
   }
 
-  /**
-   * Create a new token.
-   *
-   * @param {number} index Index of the token.
-   * @param {string} tokenType The token type.
-   * @param {string} value Value of the token.
-   * @returns {object} The token.
-   */
    _createNewTokenWith (index, tokenType, value) {
     return new Token(index, tokenType, value)
   }

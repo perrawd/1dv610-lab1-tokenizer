@@ -1,11 +1,4 @@
 /**
- * Module for Grammar.
- *
- * @author Per Rawdin <per.rawdin@student.lnu.se>
- * @version 1.0.0
- */
-
-/**
  * Enum for Grammar.
  *
  * @readonly

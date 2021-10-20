@@ -23,20 +23,6 @@ describe('Maximal munch grammar test suite', () => {
   })
 
   test('Test case 4.2: getlongestMatchFrom method should return the longest match from array of matches', () => {
-    const maximalMunchTest = new LexicalAnalysis(maximalMunchGrammar, '')
-
-    const matches = [
-      {
-        tokenMatch: 0,
-        tokenType: 'INTEGER',
-        value: '1'
-      },
-      {
-        tokenMatch: 0,
-        tokenType: 'FLOAT',
-        value: '1.23'
-      }
-    ]
     const longestMatchTest = new LongestMatch('1.23', maximalMunchGrammar.tokenTypes)
     expect(longestMatchTest.getLongestMatch()).toEqual(
       {
