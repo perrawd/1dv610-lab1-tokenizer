@@ -61,9 +61,4 @@ export default class TokenList extends Array {
   _cutFromString (subString) {
     this._string = this._string.replace(subString, '')
   }
-
-  _processError (error) {
-    console.error(`Error: ${error.message}`)
-    process.exitCode = 1
-  }
 }

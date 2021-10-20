@@ -1,4 +1,5 @@
 import Token from './token.js'
+import TokenMatchException from './error/TokenMatchException.js'
 import manageError from './error/error-handling.js'
 
 export default class GrammarMatches extends Array {
@@ -11,7 +12,7 @@ export default class GrammarMatches extends Array {
    getGrammarMatchesFor (subString) {
     try {
       this._matchTokenTypesTo(subString)
-      if (!this._matches.length) { throw new Error('No matches found for this substring.') }
+      if (!this._matches.length) { throw new TokenMatchException('No matches found for this substring.') }
       return this._matches
     } catch (error) {
       manageError(error)
@@ -34,4 +35,3 @@ export default class GrammarMatches extends Array {
     return new Token(index, tokenType, value)
   }
 }
-
