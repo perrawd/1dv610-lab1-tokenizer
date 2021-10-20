@@ -3,6 +3,7 @@ import LexicalGrammar from '../src/lib/lexical-grammar/lexical-grammar.js'
 import GRAMMAR_TYPE from '../src/lib/lexical-grammar/grammar-name.js'
 import LexicalAnalysis from '../src/lexical-analysis.js'
 import sequenceOperator from './utils/sequence-operator.js'
+import LongestMatch from '../src/longest-match.js'
 
 const { MAXIMAL_MUNCH } = GRAMMAR_TYPE
 
@@ -23,6 +24,7 @@ describe('Maximal munch grammar test suite', () => {
 
   test('Test case 4.2: getlongestMatchFrom method should return the longest match from array of matches', () => {
     const maximalMunchTest = new LexicalAnalysis(maximalMunchGrammar, '')
+
     const matches = [
       {
         tokenMatch: 0,
@@ -35,7 +37,8 @@ describe('Maximal munch grammar test suite', () => {
         value: '1.23'
       }
     ]
-    expect(maximalMunchTest._tokenList._tokenMatch._getlongestMatchFrom(matches)).toEqual(
+    const longestMatchTest = new LongestMatch(matches)
+    expect(longestMatchTest.getLongestMatch()).toEqual(
       {
         tokenMatch: 0,
         tokenType: 'FLOAT',

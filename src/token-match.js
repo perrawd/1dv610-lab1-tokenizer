@@ -1,4 +1,5 @@
 import LongestMatch from './longest-match.js'
+import GrammarMatches from './grammar-matches.js'
 import Token from './token.js'
 
 export default class TokenMatch {
@@ -7,13 +8,15 @@ export default class TokenMatch {
     this._delimiter = lexicalGrammar.delimiter
     this._trim = lexicalGrammar.trim
 
+    
     this._string = string
     this._tokenList = []
     this._index = 0
   }
 
   getTokenMatch (subString) {
-    const matches = this._getGrammarMatchesFor(subString)
+    this._grammarMatches = new GrammarMatches(this._tokenTypes)
+    const matches = this._grammarMatches._getGrammarMatchesFor(subString)
     const maximumMunch = new LongestMatch(matches)
     const longestMatch = maximumMunch.getLongestMatch()
     const token = this._createNewTokenWith(
@@ -23,50 +26,6 @@ export default class TokenMatch {
     )
     this._index += 1
     return token
-  }
-
-
-  /**
-   * Matches grammar types to a substring.
-   *
-   * @param {string} subString string.
-   * @returns {Array} Array.
-   */
-   _getGrammarMatchesFor (subString) {
-    try {
-      const matches = this._matchTokenTypesTo(subString)
-      if (!matches.length) { throw new Error('No matches found for this substring.') }
-      return matches
-    } catch (error) {
-      this._processError(error)
-    }
-  }
-
-  /**
-   * Returns an array of grammar matches for a substring.
-   *
-   * @param {string} subString The substring.
-   * @returns {Array} Array of matches.
-   */
-  _matchTokenTypesTo (subString) {
-    const matches = []
-    for (const [tokenType, pattern] of Object.entries(this._tokenTypes)) {
-      if (this._patternMatch(pattern, subString)) {
-        matches.push(this._createNewTokenWith(0, tokenType, subString.match(pattern)[0]))
-      }
-    }
-    return matches
-  }
-
-  /**
-   * Matches grammar pattern to substring.
-   *
-   * @param {string} pattern A Regexp pattern.
-   * @param {string} subString The substring.
-   * @returns {boolean} If a match is true.
-   */
-  _patternMatch (pattern, subString) {
-    return new RegExp(pattern).test(subString)
   }
 
   /**
