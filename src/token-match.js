@@ -38,4 +38,12 @@ export default class TokenMatch {
    _createNewTokenWith (index, tokenType, value) {
     return new Token(index, tokenType, value)
   }
+
+  getEndToken () {
+    return this._createNewTokenWith(
+      this._index,
+      'END',
+      'END'
+    )
+  }
 }

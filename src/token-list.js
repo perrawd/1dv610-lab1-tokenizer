@@ -45,24 +45,8 @@ export default class TokenList extends Array {
    *
    */
   _appendEndTokenToTokenList () {
-    const endToken = this._createNewTokenWith(
-      this.length,
-      'END',
-      'END'
-    )
+    const endToken = this._tokenMatch.getEndToken()
     this._appendToTokenList(endToken)
-  }
-
-  /**
-   * Create a new token.
-   *
-   * @param {number} index Index of the token.
-   * @param {string} tokenType The token type.
-   * @param {string} value Value of the token.
-   * @returns {object} The token.
-   */
-  _createNewTokenWith (index, tokenType, value) {
-    return new Token(index, tokenType, value)
   }
 
   /**
