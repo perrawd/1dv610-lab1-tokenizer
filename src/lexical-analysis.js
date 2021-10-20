@@ -5,6 +5,7 @@
  * @version 1.0.0
  */
 import Token from './lib/token/token.js'
+import TokenMatch from './token-match.js'
 
 /**
  * @class Tokenizer
@@ -17,11 +18,16 @@ export default class LexicalAnalysis {
    * @param {string} string The string to be tokenized.
    */
   constructor (lexicalGrammar, string) {
-    this._tokenTypes = lexicalGrammar.tokenTypes
     this._delimiter = lexicalGrammar.delimiter
     this._trim = lexicalGrammar.trim
-
+    /*
+    this._tokenTypes = lexicalGrammar.tokenTypes
+    
+    
+*/
     this._string = string
+
+    this._tokenMatch = new TokenMatch(lexicalGrammar, string)
 
     this._tokenList = []
     this._processNextToken()
@@ -106,6 +112,7 @@ export default class LexicalAnalysis {
     if (this._trim) this._trimString()
     const subString = this._getNextSubStringFrom(this._string)
     this._cutFromString(subString)
+    /*
     const matches = this._getGrammarMatchesFor(subString)
     const longestMatch = this._getlongestMatchFrom(matches)
     const token = this._createNewTokenWith(
@@ -114,6 +121,9 @@ export default class LexicalAnalysis {
       longestMatch.value
     )
     return token
+    */
+   const tokenMatch = this._tokenMatch.getTokenMatch(subString)
+    return tokenMatch
   }
 
   /**
@@ -140,59 +150,6 @@ export default class LexicalAnalysis {
    */
   _cutFromString (subString) {
     this._string = this._string.replace(subString, '')
-  }
-
-  /**
-   * Matches grammar types to a substring.
-   *
-   * @param {string} subString string.
-   * @returns {Array} Array.
-   */
-  _getGrammarMatchesFor (subString) {
-    try {
-      const matches = this._matchTokenTypesTo(subString)
-      if (!matches.length) { throw new Error('No matches found for this substring.') }
-      return matches
-    } catch (error) {
-      this._processError(error)
-    }
-  }
-
-  /**
-   * Returns an array of grammar matches for a substring.
-   *
-   * @param {string} subString The substring.
-   * @returns {Array} Array of matches.
-   */
-  _matchTokenTypesTo (subString) {
-    const matches = []
-    for (const [tokenType, pattern] of Object.entries(this._tokenTypes)) {
-      if (this._patternMatch(pattern, subString)) {
-        matches.push(this._createNewTokenWith(0, tokenType, subString.match(pattern)[0]))
-      }
-    }
-    return matches
-  }
-
-  /**
-   * Matches grammar pattern to substring.
-   *
-   * @param {string} pattern A Regexp pattern.
-   * @param {string} subString The substring.
-   * @returns {boolean} If a match is true.
-   */
-  _patternMatch (pattern, subString) {
-    return new RegExp(pattern).test(subString)
-  }
-
-  /**
-   * Get the longest match from an array of matches.
-   *
-   * @param {Array} matches Array of matches.
-   * @returns {object} The longest match (Maximum munch).
-   */
-  _getlongestMatchFrom (matches) {
-    return matches.sort((a, b) => b.value.length - a.value.length)[0]
   }
 
   /**
