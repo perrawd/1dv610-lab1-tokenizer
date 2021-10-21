@@ -13,6 +13,10 @@ export default class LexicalAnalysis {
     return this._activeToken
   }
 
+  getTokenList() {
+    return this._tokenList
+  }
+
   setActiveTokenToPrevious() {
     try {
       if (this._isFirstToken()) {
