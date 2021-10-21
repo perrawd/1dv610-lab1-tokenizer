@@ -11,7 +11,9 @@ export default class GrammarMatches extends Array {
    getGrammarMatchesFor (subString) {
     try {
       this._matchTokenTypesTo(subString)
-      if (!this._matches.length) { throw new TokenMatchException('No matches found for this substring.') }
+      if (!this._matches.length) {
+        throw new TokenMatchException('No matches found for this substring.')
+      }
       return this._matches
     } catch (error) {
       manageError(error)
@@ -21,7 +23,11 @@ export default class GrammarMatches extends Array {
    _matchTokenTypesTo (subString) {
     for (const [tokenType, pattern] of Object.entries(this._tokenTypes)) {
       if (this._patternMatch(pattern, subString)) {
-        this._matches.push({ tokenMatch: 0, tokenType: tokenType, value: subString.match(pattern)[0] })
+        this._matches.push({ 
+          tokenMatch: 0,
+          tokenType: tokenType,
+          value: subString.match(pattern)[0]
+        })
       }
     }
   }

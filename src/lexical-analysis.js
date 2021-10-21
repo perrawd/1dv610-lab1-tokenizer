@@ -15,7 +15,9 @@ export default class LexicalAnalysis {
 
   setActiveTokenToPrevious() {
     try {
-      if (this._isFirstToken()) { throw new TokenOutOfBoundsException('First token has been reached.') }
+      if (this._isFirstToken()) {
+        throw new TokenOutOfBoundsException('First token has been reached.')
+      }
       this._updateActiveTokenIndexToPrevious()
       this._setActiveToken()
     } catch (error) {
@@ -37,7 +39,9 @@ export default class LexicalAnalysis {
 
   setActiveTokenToNext() {
     try {
-      if (this._isEndToken()) { throw new TokenOutOfBoundsException('Last token has been reached.') }
+      if (this._isEndToken()) {
+        throw new TokenOutOfBoundsException('Last token has been reached.')
+      }
       this._tokenList._processNextToken()
       this._updateActiveTokenIndexToNext()
       this._setActiveToken()
